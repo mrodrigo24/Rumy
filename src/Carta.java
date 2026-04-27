@@ -5,7 +5,6 @@ public class Carta {
         this.valor=valor;
         this.palo=palo;
     }
-
     @Override
     public String toString() {
         return "Carta{" + valor +
