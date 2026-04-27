@@ -7,8 +7,8 @@ public class Carta {
     }
     @Override
     public String toString() {
-        return "Carta{" + valor +
+        return " (" + valor +
                 " de " + palo +
-                '}';
+                ')';
     }
 }

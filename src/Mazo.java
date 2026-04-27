@@ -10,7 +10,6 @@ public class Mazo {
     }
 
     private List<Carta> cartas =new ArrayList<>();
-
     public void inicializarMazo(){
        for(Valores v:Valores.values()){
            for (Palos p :Palos.values()){
@@ -25,6 +24,10 @@ public class Mazo {
 
     public Carta cogerCarta(){
         return cartas.removeFirst();
+    }
+
+    public int cuantasCartasQuedan(){
+        return cartas.size();
     }
 
 
