@@ -6,5 +6,7 @@ public class Juego {
         System.out.println(carta1);
         System.out.println(carta2);
         System.out.println(maz.cuantasCartasQuedan());
+        Jugador jugadorActual=new Jugador("Pedro");
+
     }
 }
