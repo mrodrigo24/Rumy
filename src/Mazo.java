@@ -30,7 +30,9 @@ public class Mazo {
         return cartas.size();
     }
 
-
+    public boolean estaVacio() {
+        return cartas.isEmpty();
+    }
     @Override
     public String toString() {
         return "Mazo{" +
