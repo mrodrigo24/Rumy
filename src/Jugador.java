@@ -19,11 +19,13 @@ public class Jugador {
     }
 
     public void mostrarMano() {
+        int numeroDeCartaDeljugador=0;
         System.out.println("Mano de " + numeroDeJugador + ":");
         Iterator<Carta> it = cartasPorJugador.iterator();
         while (it.hasNext()) {
+            numeroDeCartaDeljugador++;
             Carta c = it.next();
-            System.out.println("- " + c);
+            System.out.println(numeroDeCartaDeljugador + "- " + c);
         }
         System.out.println();
     }
@@ -40,7 +42,7 @@ public class Jugador {
         this.haSalido=haSalido;
     }
 
-    public void elegirCartas(Carta cartaElegida){
+    /*public void elegirCartas(Carta cartaElegida){
         Iterator<Carta> it = cartasPorJugador.iterator();
         List <Carta>manoDelJugador=new ArrayList<>();
         while(it.hasNext()){
@@ -51,7 +53,7 @@ public class Jugador {
         }
 
     }
-
+*/
 
    /* public void tirarCartas(List <Carta> listaJugador){
         System.out.println("Que cartas quieres tirar");

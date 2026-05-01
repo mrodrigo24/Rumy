@@ -6,6 +6,7 @@ public class Mazo {
 
     public Mazo(){
         inicializarMazo();
+        inicializarMazo();
         barajar();
     }
 
@@ -23,16 +24,20 @@ public class Mazo {
     }
 
     public Carta cogerCarta(){
+        if (cartas.isEmpty()){
+            System.out.println("¡Aviso: El mazo está vacío!");
+            return null;
+        }
         return cartas.removeFirst();
-    }
-
-    public int cuantasCartasQuedan(){
-        return cartas.size();
     }
 
     public boolean estaVacio() {
         return cartas.isEmpty();
     }
+
+
+
+
     @Override
     public String toString() {
         return "Mazo{" +

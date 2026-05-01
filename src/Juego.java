@@ -4,6 +4,7 @@ import java.util.List;
 public class Juego {
     public static void main(String[] args) {
         Mazo maz = new Mazo();
+        int sumaPuntos=0;
         List<Carta> descarte = new ArrayList<>();
         List<Jugador> jugadores = new ArrayList<>();
         int turno=0;
@@ -17,15 +18,19 @@ public class Juego {
                     jugadores.get(i).recibirCartas(maz.cogerCarta());
                 }
             }
-            while (turno<4){
+            //while (turno<=4){
                 descarte.add(maz.cogerCarta());
                 System.out.println(turno);
-                jugadores.get(turno).mostrarMano();
+                //jugadores.get(turno).mostrarMano();
                 jugadores.get(turno).recogerDescarte(descarte);
+                jugadores.get(turno).mostrarMano();
+               // jugadores.get(turno).tirarcartas(descarte);
+                List<Carta> jugadaTemporal=new ArrayList<>();
 
-                turno = (turno+1)%4;
+
+            //    turno = (turno+1)%4;
             }
 
 
     }
-}
+
