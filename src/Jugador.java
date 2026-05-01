@@ -1,12 +1,10 @@
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Jugador {
     private String numeroDeJugador;
     private int puntos;
     List<Carta> cartasPorJugador;
+    Map<Integer, Carta> opciones = new HashMap<>();
     private boolean haSalido=false;
 
     public Jugador (String numeroDeJugador){
@@ -25,6 +23,7 @@ public class Jugador {
         while (it.hasNext()) {
             numeroDeCartaDeljugador++;
             Carta c = it.next();
+            opciones.put(numeroDeCartaDeljugador,c);
             System.out.println(numeroDeCartaDeljugador + "- " + c);
         }
         System.out.println();
@@ -42,29 +41,22 @@ public class Jugador {
         this.haSalido=haSalido;
     }
 
-    /*public void elegirCartas(Carta cartaElegida){
+    public Carta elegirCartas(int numero){
         Iterator<Carta> it = cartasPorJugador.iterator();
-        List <Carta>manoDelJugador=new ArrayList<>();
+        Carta cartaExtraida = null;
+        Carta objetivo=opciones.get(numero);
+
         while(it.hasNext()){
-            Carta c=it.next();
-                manoDelJugador.add(c);
-                it.remove();
+           Carta c=it.next();
+           if(c.equals(objetivo)){
+               cartaExtraida=c;
+               it.remove();
+               break;
 
-        }
-
+           }
+                   }
+        return cartaExtraida;
     }
-*/
-
-   /* public void tirarCartas(List <Carta> listaJugador){
-        System.out.println("Que cartas quieres tirar");
-        Scanner sc = new Scanner(System.in);
-
-        if(!listaJugador.isEmpty()){
-
-            this.cartasPorJugador.remove(c);
-            System.out.println(c);
-        }
-    }*/
 
 
 }
