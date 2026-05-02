@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Juego {
     public static void main(String[] args) {
@@ -29,11 +27,26 @@ public class Juego {
                 jugadores.get(turno).recogerDescarte(descarte);
                 jugadores.get(turno).mostrarMano();
                // jugadores.get(turno).tirarcartas(descarte);
-                while (int numero!=0){
+
+                while (numero!=0){
                     System.out.println("Introduce el numero, cero para salir");
                     numero= scan.nextInt();
-                    jugadaTemporal.add(jugadores.get(turno).elegirCartas(numero));
+                    if (numero!=0){
+                        Carta seleccionada=jugadores.get(turno).elegirCartas(numero);
+                        if (seleccionada!=null){
+                            jugadaTemporal.add(seleccionada);
+                        }
+
+                    }
+
                 }
+        Collections.sort(jugadaTemporal);
+        Iterator it = jugadaTemporal.iterator();
+
+        while(it.hasNext()){
+            //Collections.sort(jugadaTemporal);
+            System.out.println("Has elegido"+it.next());
+        }
                 //    turno = (turno+1)%4;
             }
     }
