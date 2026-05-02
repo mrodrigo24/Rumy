@@ -18,4 +18,9 @@ public enum Valores {
         this.numero=numero;
     }
 
+    public int getNumero() {
+        return numero;
+    }
+
+
 }
