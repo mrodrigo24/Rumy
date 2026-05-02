@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Juego {
     public static void main(String[] args) {
+        int numero=-1;
         Mazo maz = new Mazo();
         int sumaPuntos=0;
         List<Carta>   descarte = new ArrayList<>();
@@ -23,18 +24,16 @@ public class Juego {
             }
             //while (turno<=4){
                 descarte.add(maz.cogerCarta());
-                System.out.println(turno);
+                //System.out.println(turno);
                 //jugadores.get(turno).mostrarMano();
                 jugadores.get(turno).recogerDescarte(descarte);
                 jugadores.get(turno).mostrarMano();
                // jugadores.get(turno).tirarcartas(descarte);
                 while (int numero!=0){
-                    System.out.println("Introduce el numero");
-                    int numero= scan.nextInt();
+                    System.out.println("Introduce el numero, cero para salir");
+                    numero= scan.nextInt();
                     jugadaTemporal.add(jugadores.get(turno).elegirCartas(numero));
                 }
-
-
                 //    turno = (turno+1)%4;
             }
     }
