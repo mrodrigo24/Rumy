@@ -29,9 +29,14 @@ public class Juego {
                 jugadores.get(turno).mostrarMano();
 
                 valRumy.comprobar(jugadaTemporal,jugadorActual);
-                System.out.println("El valor son siete"+valRumy.sumaPuntos(jugadaTemporal));
+                if(valRumy.sumaPuntos(jugadaTemporal)>20) {
+                    System.out.println("seguimos jugando");
+                }else{
+                        System.out.println("No es mayor de 20");
+                    }
+                };
 
                 //    turno = (turno+1)%4;
             }
-    }
+
 
