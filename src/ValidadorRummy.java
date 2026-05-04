@@ -63,6 +63,29 @@ public class ValidadorRummy {
             return true;
         }
 
+
+        public  boolean Escaleras(List<Carta> listaRecibida){
+            Iterator it = listaRecibida.iterator();
+            Carta anterior = null;
+            Palos paloDelaPrimeraCarta=null;
+            if (listaRecibida.size()<3){
+                listaRecibida.get(0).getPalo();
+
+            }
+
+            int contador=0;
+            while(it.hasNext()){
+
+
+
+
+            }
+
+            return true;
+        }
+
+
+
     }
 
 
