@@ -71,21 +71,24 @@ public class ValidadorRummy {
             return false;
         }
         Iterator<Carta> it = listaRecibida.iterator();
-        Carta anterior = null;
         Palos paloReferencia = listaRecibida.get(0).getPalo();
 
         while (it.hasNext()) {
             Carta actual = it.next();
-            if (anterior != null) {
-                // Si la actual no es exactamente la anterior + 1, rompemos
+            if (actual.getPalo() != paloReferencia) {
+                return false;
+            }
                 if (actual.getValor().getNumero() != anterior.getValor().getNumero() + 1) {
                     return false;
                 }
-            }
 
+            anterior=actual;
         }
+
         return true;
     }
+    //integrar ahora estos dos métodos en tu función comprobar para ver si el jugador puede finalmente bajar sus 30 puntos
+
 }
 
 
