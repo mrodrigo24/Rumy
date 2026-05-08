@@ -5,23 +5,20 @@ import java.util.List;
 
 public class ValidadorRummy {
 
-    Scanner scan = new Scanner(System.in);
-    int numero = -1;
+
     int sumaPuntos = 0;
 
     public boolean comprobar(List<Carta> listaRecibida, Jugador jugadorActual) {
-        while (numero != 0) {
-            System.out.println("Introduce el numero, cero para salir");
-            numero = scan.nextInt();
-            if (numero != 0) {
-                Carta seleccionada = jugadorActual.elegirCartas(numero);
-                if (seleccionada != null) {
-                    listaRecibida.add(seleccionada);
+
+                if (jugadorActual.elegirNumero() != null) {
+                    listaRecibida.add(jugadorActual.elegirNumero());
                 }
             }
         }
         return true;
     }
+
+
 
     public int sumaPuntos(List<Carta> listaRecibida) {
         Collections.sort(listaRecibida);
@@ -73,17 +70,25 @@ public class ValidadorRummy {
         Iterator<Carta> it = listaRecibida.iterator();
         Palos paloReferencia = listaRecibida.get(0).getPalo();
 
-        while (it.hasNext()) {
-            Carta actual = it.next();
-            if (actual.getPalo() != paloReferencia) {
-                return false;
-            }
-                if (actual.getValor().getNumero() != anterior.getValor().getNumero() + 1) {
-                    return false;
+            while (it.hasNext()) {
+                Carta actual = it.next();
+                if (anterior!=null){
+                    if (actual.getPalo() != paloReferencia) {
+                        return false;
+                    }
+
+                }
+                if(anterior!=null){
+                    if (actual.getValor().getNumero() != anterior.getValor().getNumero() + 1) {
+                        return false;
                 }
 
-            anterior=actual;
-        }
+                }
+                anterior=actual;
+            }
+
+
+
 
         return true;
     }

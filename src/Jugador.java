@@ -6,7 +6,8 @@ public class Jugador {
     List<Carta> cartasPorJugador;
     Map<Integer, Carta> opciones = new HashMap<>();
     private boolean haSalido=false;
-
+    Scanner scan = new Scanner(System.in);
+    int numero = -1;
     public Jugador (String numeroDeJugador){
      this.numeroDeJugador=numeroDeJugador;
      this.puntos=0;
@@ -33,7 +34,7 @@ public class Jugador {
             if(!listacomun.isEmpty()){
                 Carta c=listacomun.removeFirst();
                 this.cartasPorJugador.add(c);
-                System.out.println(c);
+
             }
     }
 
@@ -59,4 +60,28 @@ public class Jugador {
         return cartaExtraida;
     }
 
+
+    public Carta elegirNumero(int numero){
+        while (numero != 0) {
+            System.out.println("Introduce el numero, cero para salir");
+            numero = scan.nextInt();
+            Carta seleccionada= elegirCartas(numero);
+            return seleccionada;
+
+    }
+
+    public boolean alguienHaGanado(List <Carta> cartasPorJugador){
+        if (!cartasPorJugador.isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    public List<Carta> getCartasPorJugador() {
+        return cartasPorJugador;
+    }
+
+    public void volverLaCartaAlMazodeJugador(Carta crt) {
+        this.cartasPorJugador.add(crt);
+    }
 }
