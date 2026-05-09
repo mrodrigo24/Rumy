@@ -30,10 +30,7 @@ public class Juego {
             jugadores.get(turno).hacerBackupmanoJugador();
             jugadores.get(turno).mostrarMano();
             jugadores.get(turno).mostrarDescarte(jugadaTemporal);
-
-
             //
-
             //valRumy.comprobar(jugadaTemporal,jugadorActual);
             if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
                 alguienHaGanado = true;
