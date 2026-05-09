@@ -5,20 +5,7 @@ import java.util.List;
 
 public class ValidadorRummy {
 
-
     int sumaPuntos = 0;
-
-    public boolean comprobar(List<Carta> listaRecibida, Jugador jugadorActual) {
-
-                if (jugadorActual.elegirNumero() != null) {
-                    listaRecibida.add(jugadorActual.elegirNumero());
-                }
-            }
-        }
-        return true;
-    }
-
-
 
     public int sumaPuntos(List<Carta> listaRecibida) {
         Collections.sort(listaRecibida);
@@ -27,8 +14,7 @@ public class ValidadorRummy {
             Carta actual = it.next();
             sumaPuntos += actual.getValor().getNumero();
         }
-        //System.out.println("El valor es "+sumaPuntos);
-        return sumaPuntos;
+       return sumaPuntos;
     }
 
     public boolean Grupos(List<Carta> listaRecibida) {

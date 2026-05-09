@@ -3,14 +3,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class Mazo {
-
-    public Mazo(){
-        inicializarMazo();
-        inicializarMazo();
+    private List<Carta> cartas =new ArrayList<>();
+    public Mazo(int  num){
+        for (int i = 0; i < num; i++) {
+            inicializarMazo();
+        }
         barajar();
     }
 
-    private List<Carta> cartas =new ArrayList<>();
+
     public void inicializarMazo(){
        for(Valores v:Valores.values()){
            for (Palos p :Palos.values()){

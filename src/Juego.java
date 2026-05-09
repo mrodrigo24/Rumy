@@ -32,7 +32,8 @@ public class Juego {
             jugadores.get(turno).mostrarDescarte(jugadaTemporal);
 
 
-            //jugadores.get(turno).mostrarMano();
+            //
+
             //valRumy.comprobar(jugadaTemporal,jugadorActual);
             if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
                 alguienHaGanado = true;
