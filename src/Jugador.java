@@ -97,7 +97,7 @@ public class Jugador {
 
     public void restaurarmano(){
         if(this.backupCartasPorJugador!=null){
-            this.cartasPorJugador=new ArrayList<>(cartasPorJugador);
+            this.cartasPorJugador=new ArrayList<>(backupCartasPorJugador);
         }
 
     }
