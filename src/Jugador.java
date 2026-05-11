@@ -56,6 +56,7 @@ public class Jugador {
                 this.cartasPorJugador.add(c);
             }
     }
+
     public void setHasalido(boolean haSalido){
         this.haSalido=haSalido;
     }
@@ -99,9 +100,7 @@ public class Jugador {
         if(this.backupCartasPorJugador!=null){
             this.cartasPorJugador=new ArrayList<>(backupCartasPorJugador);
         }
-
     }
-
 
     public boolean alguienHaGanado(List <Carta> cartasPorJugador){
         if (!cartasPorJugador.isEmpty()){
@@ -110,12 +109,13 @@ public class Jugador {
         return true;
     }
 
+    public boolean isHaSalido(){
+        return this.haSalido;
+    }
+
     public List<Carta> getCartasPorJugador() {
         return cartasPorJugador;
     }
-
-
-
 
     public void volverLaCartaAlMazodeJugador(Carta crt) {
         this.cartasPorJugador.add(crt);
