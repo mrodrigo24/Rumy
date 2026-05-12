@@ -21,35 +21,39 @@ public class Juego {
         }
 
 
-        boolean alguienHaGanado = false;
         while (!alguienHaGanado) {
-            Jugador jugadorActual = jugadores.get(turno);
-            jugadorActual.hacerBackupmanoJugador();
-            if (!maz.estaVacio()) {
+            Jugador jugadorActual = jugadores.get(turno); [cite: 213]
+            jugadorActual.hacerBackupmanoJugador(); [cite: 214]
 
-                Carta cartaRobada = maz.cogerCarta();
-                descarte.add(cartaRobada);
-            } else {
-                System.out.println("El mazo se ha agotado. Fin del juego o barajar descarte.");
-                alguienHaGanado = true; // O la lógica que prefieras para terminar
+            // Fase de robo
+            if (!maz.estaVacio()) {
+                descarte.add(maz.cogerCarta());
+                jugadorActual.recogerDescarte(descarte);
             }
-            //descarte.add(maz.cogerCarta());
-            jugadorActual.recogerDescarte(descarte);
+
             jugadorActual.mostrarMano();
             jugadorActual.sacarCartas(jugadaTemporal);
-            if(valRumy.comprobar(jugadaTemporal,jugadorActual)) {
-                System.out.println("Jugada válida.");
-                if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
-                    alguienHaGanado = true;
-                    System.out.println("¡Ganador: " + jugadorActual + "!");
-                } else
-                    System.out.println("Jugada inválida o puntos insuficientes (mínimo 30).");
-                jugadorActual.restaurarmano();
-                jugadaTemporal.clear();
 
-                if (!alguienHaGanado) {
-                    turno = (turno + 1) % 4;
-                }
+            // VALIDACIÓN: Aquí es donde estaba el error de las llaves
+            if (!jugadaTemporal.isEmpty()) {
+                if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
+                    System.out.println("Jugada válida.");
+
+                    if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
+                        alguienHaGanado = true;
+                        System.out.println("¡Ganador: " + jugadorActual + "!");
+                    }
+                } else {
+                    // Si la jugada NO es válida, devolvemos las cartas
+                    System.out.println("Jugada inválida o puntos insuficientes.");
+                    jugadorActual.restaurarmano();
+            }
+
+            // FINAL DEL TURNO: Estas líneas deben ejecutarse SIEMPRE (fuera de los IF de arriba)
+            jugadaTemporal.clear();
+            if (!alguienHaGanado) {
+                turno = (turno + 1) % 4;
+                System.out.println("\n--- CAMBIO DE TURNO ---");
             }
         }
     }
