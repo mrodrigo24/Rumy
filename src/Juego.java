@@ -1,4 +1,4 @@
-import org.w3c.dom.ls.LSOutput;
+
 import java.util.*;
 public class Juego {
     public static void main(String[] args) {
@@ -8,47 +8,54 @@ public class Juego {
         List<Jugador> jugadores = new ArrayList<>();
         List<Carta> jugadaTemporal = new ArrayList<>();
         ValidadorRummy valRumy = new ValidadorRummy();
-        //Scanner scan = new Scanner(System.in);
         int turno = 0;
         for (int i = 0; i < 4; i++) {
             jugadores.add(new Jugador("Jugador" + (i)));
         }
-        turno = (turno + 1) % 4;
-        //while(jugadores.get(turno).)
+
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
                 jugadores.get(i).recibirCartas(maz.cogerCarta());
             }
         }
+
+
         boolean alguienHaGanado = false;
         while (!alguienHaGanado) {
             Jugador jugadorActual = jugadores.get(turno);
-            descarte.add(maz.cogerCarta());
-            jugadores.get(turno).recogerDescarte(descarte);
-            jugadores.get(turno).mostrarMano();
-            jugadores.get(turno).sacarCartas(jugadaTemporal);
-            jugadores.get(turno).hacerBackupmanoJugador();
-            jugadores.get(turno).mostrarMano();
-            jugadores.get(turno).mostrarDescarte(jugadaTemporal);
-            //
-            //valRumy.comprobar(jugadaTemporal,jugadorActual);
-            if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
-                alguienHaGanado = true;
-                System.out.println("¡Ganador: " + jugadorActual + "!");
-            } else
-                turno = (turno + 1) % 4;
+            jugadorActual.hacerBackupmanoJugador();
+            if (!maz.estaVacio()) {
 
-            if (valRumy.sumaPuntos(jugadaTemporal) > 30) {
-                System.out.println("seguimos jugando");
+                Carta cartaRobada = maz.cogerCarta();
+                descarte.add(cartaRobada);
             } else {
-                System.out.println("No es mayor de 20");
-                jugadores.get(turno).restaurarmano();
-                jugadores.get(turno).mostrarMano();
+                System.out.println("El mazo se ha agotado. Fin del juego o barajar descarte.");
+                alguienHaGanado = true; // O la lógica que prefieras para terminar
+            }
+            //descarte.add(maz.cogerCarta());
+            jugadorActual.recogerDescarte(descarte);
+            jugadorActual.mostrarMano();
+            jugadorActual.sacarCartas(jugadaTemporal);
+            if(valRumy.comprobar(jugadaTemporal,jugadorActual)) {
+                System.out.println("Jugada válida.");
+                if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
+                    alguienHaGanado = true;
+                    System.out.println("¡Ganador: " + jugadorActual + "!");
+                } else
+                    System.out.println("Jugada inválida o puntos insuficientes (mínimo 30).");
+                jugadorActual.restaurarmano();
+                jugadaTemporal.clear();
+
+                if (!alguienHaGanado) {
+                    turno = (turno + 1) % 4;
+                }
             }
         }
     }
 }
-             //    turno = (turno+1)%4;
-            //}
+
+
+
 
 
