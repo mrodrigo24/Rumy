@@ -11,7 +11,6 @@ public class Mazo {
         barajar();
     }
 
-
     public void inicializarMazo(){
        for(Valores v:Valores.values()){
            for (Palos p :Palos.values()){
@@ -35,8 +34,6 @@ public class Mazo {
     public boolean estaVacio() {
         return cartas.isEmpty();
     }
-
-
 
 
     @Override

@@ -5,16 +5,17 @@ import java.util.List;
 
 public class ValidadorRummy {
 
-    int sumaPuntos = 0;
-
     public int sumaPuntos(List<Carta> listaRecibida) {
+        int sumaPuntos = 0;
         Collections.sort(listaRecibida);
         Iterator<Carta> it = listaRecibida.iterator();
         while (it.hasNext()) {
             Carta actual = it.next();
             sumaPuntos += actual.getValor().getNumero();
         }
-       return sumaPuntos;
+        System.out.println(sumaPuntos);
+        System.out.println("Ha pasado 2");
+        return sumaPuntos;
     }
 
     public boolean Grupos(List<Carta> listaRecibida) {
@@ -56,30 +57,45 @@ public class ValidadorRummy {
         Iterator<Carta> it = listaRecibida.iterator();
         Palos paloReferencia = listaRecibida.get(0).getPalo();
 
-            while (it.hasNext()) {
-                Carta actual = it.next();
-                if (anterior!=null){
-                    if (actual.getPalo() != paloReferencia) {
-                        return false;
-                    }
-
-                }
-                if(anterior!=null){
-                    if (actual.getValor().getNumero() != anterior.getValor().getNumero() + 1) {
-                        return false;
+        while (it.hasNext()) {
+            Carta actual = it.next();
+            if (anterior != null) {
+                if (actual.getPalo() != paloReferencia) {
+                    return false;
                 }
 
-                }
-                anterior=actual;
             }
+            if (anterior != null) {
+                if (actual.getValor().getNumero() != anterior.getValor().getNumero() + 1) {
+                    return false;
+                }
 
-
-
+            }
+            anterior = actual;
+        }
 
         return true;
     }
-    //integrar ahora estos dos métodos en tu función comprobar para ver si el jugador puede finalmente bajar sus 30 puntos
 
+    public boolean comprobar(List<Carta> jugadaTemporal, Jugador jugadorActual) {
+        boolean esFormacionValida = Grupos(jugadaTemporal) || Escaleras(jugadaTemporal);
+
+        if (!esFormacionValida) {
+            return false;
+        }
+
+        if (!jugadorActual.isHaSalido()) {
+            if (sumaPuntos(jugadaTemporal) >= 30) {
+                jugadorActual.setHasalido(true);
+                System.out.println("Ha pasado 1");
+                return true;
+            } else {
+                System.out.println(sumaPuntos(jugadaTemporal));
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 

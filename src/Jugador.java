@@ -1,5 +1,4 @@
 import java.util.*;
-
 public class Jugador {
     private String numeroDeJugador;
     private int puntos;
@@ -19,6 +18,7 @@ public class Jugador {
     }
 
     public void mostrarMano() {
+        Collections.sort(this.cartasPorJugador);
         int numeroDeCartaDeljugador=0;
         System.out.println("Mano de " + numeroDeJugador + ":");
         Iterator<Carta> it = cartasPorJugador.iterator();
@@ -28,7 +28,6 @@ public class Jugador {
             opciones.put(numeroDeCartaDeljugador,c);
             System.out.println(numeroDeCartaDeljugador + "- " + c);
         }
-
         System.out.println();
     }
 
@@ -43,7 +42,6 @@ public class Jugador {
 
             while (it.hasNext()) {
                 Carta c = it.next();
-
                 System.out.println(contador + "- " + c);
                 contador++;
             }
