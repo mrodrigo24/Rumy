@@ -24,18 +24,15 @@ public class Carta implements Comparable <Carta>{
 
     @Override
     public int compareTo(Carta crt) {
-        int numero1=this.valor.getNumero();
-        int numero2=crt.getValor().getNumero();
-        if (numero1<numero2) {
-            return -1;
-        }
-        if (numero1>numero2) {
-            return 1;
+
+        int compNumero = Integer.compare(this.valor.getNumero(), crt.getValor().getNumero());
+
+        if (compNumero != 0) {
+            return compNumero;
         }
 
-        return 0;
+        return this.palo.compareTo(crt.getPalo());
     }
-
     @Override
     public String toString() {
         return " (" + valor + " de " +palo + ')';
