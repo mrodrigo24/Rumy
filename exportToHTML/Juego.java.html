@@ -3,60 +3,84 @@
 <title>Juego.java</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
-.s0 { color: #cf8e6d;}
-.s1 { color: #bcbec4;}
-.s2 { color: #bcbec4;}
-.s3 { color: #2aacb8;}
-.s4 { color: #6aab73;}
-.s5 { color: #7a7e85;}
+.s0 { color: #ebebeb;}
+.s1 { color: #ed864a;}
+.s2 { color: #ed864a; font-weight: bold;}
+.s3 { color: #33ccff; font-weight: bold;}
+.s4 { color: #54b33e;}
+.s5 { color: #7ec3e6;}
 </style>
 </head>
-<body bgcolor="#1e1f22">
+<body bgcolor="#131314">
 <table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
 <tr><td><center>
 <font face="Arial, Helvetica" color="#000000">
 Juego.java</font>
 </center></td></tr></table>
-<pre><span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
-<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
-<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Scanner</span><span class="s2">;</span>
+<pre>
+<span class="s1">import </span><span class="s0">java.util.*</span><span class="s2">;</span>
+<span class="s1">public class </span><span class="s0">Juego {</span>
+    <span class="s1">public static void </span><span class="s0">main(String[] args) {</span>
+        <span class="s1">int </span><span class="s0">numero = -</span><span class="s3">1</span><span class="s2">;</span>
+        <span class="s1">boolean </span><span class="s0">alguienHaGanado = </span><span class="s1">false</span><span class="s2">;</span>
+        <span class="s0">Mazo maz = </span><span class="s1">new </span><span class="s0">Mazo(</span><span class="s3">2</span><span class="s0">)</span><span class="s2">;</span>
+        <span class="s0">List&lt;Carta&gt; descarte = </span><span class="s1">new </span><span class="s0">ArrayList&lt;&gt;()</span><span class="s2">;</span>
+        <span class="s0">List&lt;Jugador&gt; jugadores = </span><span class="s1">new </span><span class="s0">ArrayList&lt;&gt;()</span><span class="s2">;</span>
+        <span class="s0">List&lt;Carta&gt; jugadaTemporal = </span><span class="s1">new </span><span class="s0">ArrayList&lt;&gt;()</span><span class="s2">;</span>
+        <span class="s0">ValidadorRummy valRumy = </span><span class="s1">new </span><span class="s0">ValidadorRummy()</span><span class="s2">;</span>
+        <span class="s1">int </span><span class="s0">turno = </span><span class="s3">0</span><span class="s2">;</span>
+        <span class="s1">for </span><span class="s0">(</span><span class="s1">int </span><span class="s0">i = </span><span class="s3">0</span><span class="s2">; </span><span class="s0">i &lt; </span><span class="s3">4</span><span class="s2">; </span><span class="s0">i++) {</span>
+            <span class="s0">jugadores.add(</span><span class="s1">new </span><span class="s0">Jugador(</span><span class="s4">&quot;Jugador&quot; </span><span class="s0">+ (i)))</span><span class="s2">;</span>
+        <span class="s0">}</span>
 
-<span class="s0">public class </span><span class="s1">Juego </span><span class="s2">{</span>
-    <span class="s0">public static void </span><span class="s1">main</span><span class="s2">(</span><span class="s1">String</span><span class="s2">[] </span><span class="s1">args</span><span class="s2">) {</span>
-        <span class="s1">Mazo maz </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Mazo</span><span class="s2">();</span>
-        <span class="s0">int </span><span class="s1">sumaPuntos</span><span class="s2">=</span><span class="s3">0</span><span class="s2">;</span>
-        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Carta</span><span class="s2">&gt;   </span><span class="s1">descarte </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
-        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Jugador</span><span class="s2">&gt; </span><span class="s1">jugadores </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
-        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Carta</span><span class="s2">&gt;   </span><span class="s1">jugadaTemporal</span><span class="s2">=</span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
-        <span class="s1">Scanner scan </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
-        <span class="s0">int </span><span class="s1">turno</span><span class="s2">=</span><span class="s3">0</span><span class="s2">;</span>
-            <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s3">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s3">4</span><span class="s2">; </span><span class="s1">i</span><span class="s2">++) {</span>
-                <span class="s1">jugadores</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Jugador</span><span class="s2">(</span><span class="s4">&quot;Jugador&quot; </span><span class="s2">+ (</span><span class="s1">i</span><span class="s2">)));</span>
-            <span class="s2">}</span>
-            <span class="s1">turno </span><span class="s2">= (</span><span class="s1">turno </span><span class="s2">+ </span><span class="s3">1</span><span class="s2">) % </span><span class="s3">4</span><span class="s2">;</span>
+        <span class="s1">for </span><span class="s0">(</span><span class="s1">int </span><span class="s0">i = </span><span class="s3">0</span><span class="s2">; </span><span class="s0">i &lt; </span><span class="s3">4</span><span class="s2">; </span><span class="s0">i++) {</span>
+            <span class="s1">for </span><span class="s0">(</span><span class="s1">int </span><span class="s0">j = </span><span class="s3">0</span><span class="s2">; </span><span class="s0">j &lt; </span><span class="s3">10</span><span class="s2">; </span><span class="s0">j++) {</span>
+                <span class="s0">jugadores.get(i).recibirCartas(maz.cogerCarta())</span><span class="s2">;</span>
+            <span class="s0">}</span>
+        <span class="s0">}</span>
 
-            <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s3">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s3">4</span><span class="s2">; </span><span class="s1">i</span><span class="s2">++) {</span>
-                <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">j </span><span class="s2">= </span><span class="s3">0</span><span class="s2">; </span><span class="s1">j </span><span class="s2">&lt; </span><span class="s3">10</span><span class="s2">; </span><span class="s1">j</span><span class="s2">++) {</span>
-                    <span class="s1">jugadores</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">).</span><span class="s1">recibirCartas</span><span class="s2">(</span><span class="s1">maz</span><span class="s2">.</span><span class="s1">cogerCarta</span><span class="s2">());</span>
-                <span class="s2">}</span>
-            <span class="s2">}</span>
-            <span class="s5">//while (turno&lt;=4){</span>
-                <span class="s1">descarte</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">maz</span><span class="s2">.</span><span class="s1">cogerCarta</span><span class="s2">());</span>
-                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">turno</span><span class="s2">);</span>
-                <span class="s5">//jugadores.get(turno).mostrarMano();</span>
-                <span class="s1">jugadores</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">turno</span><span class="s2">).</span><span class="s1">recogerDescarte</span><span class="s2">(</span><span class="s1">descarte</span><span class="s2">);</span>
-                <span class="s1">jugadores</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">turno</span><span class="s2">).</span><span class="s1">mostrarMano</span><span class="s2">();</span>
-               <span class="s5">// jugadores.get(turno).tirarcartas(descarte);</span>
-                <span class="s0">while </span><span class="s2">(</span><span class="s0">int </span><span class="s1">numero</span><span class="s2">!=</span><span class="s3">0</span><span class="s2">){</span>
-                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Introduce el numero, cero para salir&quot;</span><span class="s2">);</span>
-                    <span class="s1">numero</span><span class="s2">= </span><span class="s1">scan</span><span class="s2">.</span><span class="s1">nextInt</span><span class="s2">();</span>
-                    <span class="s1">jugadaTemporal</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">jugadores</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">turno</span><span class="s2">).</span><span class="s1">elegirCartas</span><span class="s2">(</span><span class="s1">numero</span><span class="s2">));</span>
-                <span class="s2">}</span>
+        <span class="s1">while </span><span class="s0">(!alguienHaGanado) {</span>
+            <span class="s0">Jugador jugadorActual = jugadores.get(turno)</span><span class="s2">;</span>
+            <span class="s0">jugadorActual.hacerBackupmanoJugador()</span><span class="s2">;</span>
+
+            <span class="s5">// Fase de robo</span>
+            <span class="s1">if </span><span class="s0">(!maz.estaVacio()) {</span>
+                <span class="s0">descarte.add(maz.cogerCarta())</span><span class="s2">;</span>
+                <span class="s0">jugadorActual.recogerDescarte(descarte)</span><span class="s2">;</span>
+            <span class="s0">}</span>
+
+            <span class="s0">jugadorActual.mostrarMano()</span><span class="s2">;</span>
+            <span class="s0">jugadorActual.sacarCartas(jugadaTemporal)</span><span class="s2">;</span>
+
+            <span class="s1">if </span><span class="s0">(!jugadaTemporal.isEmpty()) {</span>
+                <span class="s1">if </span><span class="s0">(valRumy.comprobar(jugadaTemporal</span><span class="s2">, </span><span class="s0">jugadorActual)) {</span>
+                    <span class="s0">System.out.println(</span><span class="s4">&quot;Jugada válida.&quot;</span><span class="s0">)</span><span class="s2">;</span>
+
+                    <span class="s1">if </span><span class="s0">(jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {</span>
+                        <span class="s0">alguienHaGanado = </span><span class="s1">true</span><span class="s2">;</span>
+                        <span class="s0">System.out.println(</span><span class="s4">&quot;¡Ganador: &quot; </span><span class="s0">+ jugadorActual + </span><span class="s4">&quot;!&quot;</span><span class="s0">)</span><span class="s2">;</span>
+                    <span class="s0">}</span>
+                <span class="s0">} </span><span class="s1">else </span><span class="s0">{</span>
+                    <span class="s5">// Si la jugada NO es válida, devolvemos las cartas</span>
+                    <span class="s0">System.out.println(</span><span class="s4">&quot;Jugada inválida o puntos insuficientes.&quot;</span><span class="s0">)</span><span class="s2">;</span>
+                    <span class="s0">jugadorActual.restaurarmano()</span><span class="s2">;</span>
+                    <span class="s0">System.out.println(</span><span class="s4">&quot;Tira una carta a la mesa&quot;</span><span class="s0">)</span><span class="s2">;</span>
+                <span class="s0">}</span>
+
+                <span class="s5">// FINAL DEL TURNO: Estas líneas deben ejecutarse SIEMPRE (fuera de los IF de arriba)</span>
+                <span class="s0">jugadaTemporal.clear()</span><span class="s2">;</span>
+                <span class="s1">if </span><span class="s0">(!alguienHaGanado) {</span>
+                    <span class="s0">turno = (turno + </span><span class="s3">1</span><span class="s0">) % </span><span class="s3">4</span><span class="s2">;</span>
+                    <span class="s0">System.out.println(</span><span class="s4">&quot;</span><span class="s1">\n</span><span class="s4">--- CAMBIO DE TURNO ---&quot;</span><span class="s0">)</span><span class="s2">;</span>
+                <span class="s0">}</span>
+            <span class="s0">}</span>
+        <span class="s0">}</span>
+    <span class="s0">}</span>
+<span class="s0">}</span>
 
 
-                <span class="s5">//    turno = (turno+1)%4;</span>
-            <span class="s2">}</span>
-    <span class="s2">}</span>
+
+
 
 </pre>
 </body>

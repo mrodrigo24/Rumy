@@ -11,70 +11,65 @@ public class ValidadorRummy {
         Iterator<Carta> it = listaRecibida.iterator();
         while (it.hasNext()) {
             Carta actual = it.next();
-            sumaPuntos += actual.getValor().getNumero();
+            sumaPuntos += actual.getSimbolo().getValorNumerico();
         }
+
         System.out.println(sumaPuntos);
         System.out.println("Ha pasado 2");
         return sumaPuntos;
     }
 
     public boolean Grupos(List<Carta> listaRecibida) {
-        Iterator<Carta> it = listaRecibida.iterator();
+        if (listaRecibida.size() < 3) return false;
+
         List<Palos> palosYaVistos = new ArrayList<>();
-        Palos ultimoPalo = null;
-        int contador = 0;
-        if (listaRecibida.size() < 3) {
-            return false;
-        }
-        int numeroReferencia = listaRecibida.get(0).getValor().getNumero();
-        while (it.hasNext()) {
-            Carta actual = it.next();
+        int numeroReferencia = listaRecibida.get(0).getSimbolo().getValorNumerico();
+
+        for (Carta actual : listaRecibida) {
+            // 1. Verificar si el palo ya ha salido (Regla de palos distintos)
             if (palosYaVistos.contains(actual.getPalo())) {
                 return false;
-            } else {
-                palosYaVistos.add(actual.getPalo());
             }
+            palosYaVistos.add(actual.getPalo());
 
-            if (actual.getValor().getNumero() != numeroReferencia) {
+            // 2. Verificar que todas las cartas tengan el mismo número
+            if (actual.getSimbolo().getValorNumerico() != numeroReferencia) {
                 return false;
             }
-            Palos paloActual = actual.getPalo();
-            if (!paloActual.equals(ultimoPalo)) {
-                contador++;
-            }
-            ultimoPalo = paloActual;
         }
         return true;
     }
 
 
     public boolean Escaleras(List<Carta> listaRecibida) {
-        Carta anterior = null;
-        Collections.sort(listaRecibida);
+        // 1. El mínimo siempre primero
         if (listaRecibida.size() < 3) {
             return false;
         }
-        Iterator<Carta> it = listaRecibida.iterator();
+
+        // 2. Ordenar es vital para que n, n+1, n+2 funcione
+        Collections.sort(listaRecibida);
+
+        // 3. Tomamos la referencia del primer palo
         Palos paloReferencia = listaRecibida.get(0).getPalo();
 
-        while (it.hasNext()) {
-            Carta actual = it.next();
-            if (anterior != null) {
-                if (actual.getPalo() != paloReferencia) {
-                    return false;
-                }
+        // 4. Empezamos a comparar desde la segunda carta (índice 1)
+        for (int i = 1; i < listaRecibida.size(); i++) {
+            Carta actual = listaRecibida.get(i);
+            Carta anterior = listaRecibida.get(i - 1);
 
+            // Comprobamos que el palo sea el mismo que el de la primera carta
+            if (!actual.getPalo().equals(paloReferencia)) {
+                return false;
             }
-            if (anterior != null) {
-                if (actual.getValor().getNumero() != anterior.getValor().getNumero() + 1) {
-                    return false;
-                }
 
+            // Comprobamos que el número sea exactamente uno más que el anterior
+            if (actual.getSimbolo().getValorNumerico() != anterior.getSimbolo().getValorNumerico()+ 1) {
+                return false;
             }
-            anterior = actual;
         }
 
-        return true;
+        return true; // Si pasa todo el bucle, es una escalera perfecta
     }
 
     public boolean comprobar(List<Carta> jugadaTemporal, Jugador jugadorActual) {

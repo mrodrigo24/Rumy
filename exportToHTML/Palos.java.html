@@ -3,23 +3,38 @@
 <title>Palos.java</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
-.s0 { color: #cf8e6d;}
-.s1 { color: #bcbec4;}
-.s2 { color: #bcbec4;}
+.s0 { color: #ed864a;}
+.s1 { color: #ebebeb;}
+.s2 { color: #54b33e;}
+.s3 { color: #ed864a; font-weight: bold;}
+.s4 { color: #7ec3e6;}
 </style>
 </head>
-<body bgcolor="#1e1f22">
+<body bgcolor="#131314">
 <table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
 <tr><td><center>
 <font face="Arial, Helvetica" color="#000000">
 Palos.java</font>
 </center></td></tr></table>
-<pre><span class="s0">public enum </span><span class="s1">Palos </span><span class="s2">{</span>
-    <span class="s1">PICAS</span><span class="s2">,</span>
-    <span class="s1">CORAZONES</span><span class="s2">,</span>
-    <span class="s1">TREBOLES</span><span class="s2">,</span>
-    <span class="s1">DIAMANTES</span><span class="s2">;</span>
-    <span class="s2">}</span>
-</pre>
+<pre><span class="s0">public enum </span><span class="s1">Palos {</span>
+    <span class="s1">CORAZONES(</span><span class="s2">&quot;♥&quot;</span><span class="s3">, </span><span class="s2">&quot;</span><span class="s0">\u001B</span><span class="s2">[31m&quot;</span><span class="s1">)</span><span class="s3">,    </span><span class="s4">// Rojo (Se ve bien en ambos)</span>
+    <span class="s1">DIAMANTES(</span><span class="s2">&quot;♦&quot;</span><span class="s3">, </span><span class="s2">&quot;</span><span class="s0">\u001B</span><span class="s2">[31m&quot;</span><span class="s1">)</span><span class="s3">,    </span><span class="s4">// Rojo (Se ve bien en ambos)</span>
+    <span class="s1">PICAS(</span><span class="s2">&quot;♠&quot;</span><span class="s3">, </span><span class="s2">&quot;</span><span class="s0">\u001B</span><span class="s2">[37m&quot;</span><span class="s1">)</span><span class="s3">,        </span><span class="s4">// Blanco (Se verá en fondo negro)</span>
+    <span class="s1">TREBOLES(</span><span class="s2">&quot;♣&quot;</span><span class="s3">, </span><span class="s2">&quot;</span><span class="s0">\u001B</span><span class="s2">[34m&quot;</span><span class="s1">)</span><span class="s3">;     </span><span class="s4">// Azul (Opcional, para diferenciar de las picas)</span>
+
+    <span class="s0">private final </span><span class="s1">String icono</span><span class="s3">;</span>
+    <span class="s0">private final </span><span class="s1">String color</span><span class="s3">;</span>
+    <span class="s0">private final </span><span class="s1">String RESET = </span><span class="s2">&quot;</span><span class="s0">\u001B</span><span class="s2">[0m&quot;</span><span class="s3">;</span>
+
+    <span class="s1">Palos(String icono</span><span class="s3">, </span><span class="s1">String color) {</span>
+        <span class="s0">this</span><span class="s1">.icono = icono</span><span class="s3">;</span>
+        <span class="s0">this</span><span class="s1">.color = color</span><span class="s3">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">String toString() {</span>
+        <span class="s0">return </span><span class="s1">color + icono + RESET</span><span class="s3">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
 </body>
 </html>

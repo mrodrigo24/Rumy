@@ -12,7 +12,7 @@ public class Mazo {
     }
 
     public void inicializarMazo(){
-       for(Valores v:Valores.values()){
+       for(Simbolo v:Simbolo.values()){
            for (Palos p :Palos.values()){
               cartas.add(new Carta(v,p));
            }

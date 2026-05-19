@@ -3,81 +3,140 @@
 <title>Jugador.java</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
-.s0 { color: #cf8e6d;}
-.s1 { color: #bcbec4;}
-.s2 { color: #bcbec4;}
-.s3 { color: #2aacb8;}
-.s4 { color: #6aab73;}
+.s0 { color: #ed864a;}
+.s1 { color: #ebebeb;}
+.s2 { color: #ed864a; font-weight: bold;}
+.s3 { color: #33ccff; font-weight: bold;}
+.s4 { color: #54b33e;}
 </style>
 </head>
-<body bgcolor="#1e1f22">
+<body bgcolor="#131314">
 <table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
 <tr><td><center>
 <font face="Arial, Helvetica" color="#000000">
 Jugador.java</font>
 </center></td></tr></table>
-<pre><span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.*;</span>
-
-<span class="s0">public class </span><span class="s1">Jugador </span><span class="s2">{</span>
+<pre><span class="s0">import </span><span class="s1">java.util.*</span><span class="s2">;</span>
+<span class="s0">public class </span><span class="s1">Jugador {</span>
     <span class="s0">private </span><span class="s1">String numeroDeJugador</span><span class="s2">;</span>
     <span class="s0">private int </span><span class="s1">puntos</span><span class="s2">;</span>
-    <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Carta</span><span class="s2">&gt; </span><span class="s1">cartasPorJugador</span><span class="s2">;</span>
-    <span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">Integer</span><span class="s2">, </span><span class="s1">Carta</span><span class="s2">&gt; </span><span class="s1">opciones </span><span class="s2">= </span><span class="s0">new </span><span class="s1">HashMap</span><span class="s2">&lt;&gt;();</span>
-    <span class="s0">private boolean </span><span class="s1">haSalido</span><span class="s2">=</span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">List&lt;Carta&gt; cartasPorJugador</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">List&lt;Carta&gt; backupCartasPorJugador</span><span class="s2">;</span>
+    <span class="s1">Map&lt;Integer</span><span class="s2">, </span><span class="s1">Carta&gt; opciones = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s2">;</span>
+    <span class="s0">private boolean </span><span class="s1">haSalido=</span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s1">Scanner scan = </span><span class="s0">new </span><span class="s1">Scanner(System.in)</span><span class="s2">;</span>
+    <span class="s0">int </span><span class="s1">numero = -</span><span class="s3">1</span><span class="s2">;</span>
+    <span class="s0">public </span><span class="s1">Jugador (String numeroDeJugador){</span>
+     <span class="s0">this</span><span class="s1">.numeroDeJugador=numeroDeJugador</span><span class="s2">;</span>
+     <span class="s0">this</span><span class="s1">.puntos=</span><span class="s3">0</span><span class="s2">;</span>
+     <span class="s0">this</span><span class="s1">.cartasPorJugador=</span><span class="s0">new </span><span class="s1">ArrayList&lt;Carta&gt;()</span><span class="s2">;</span>
+<span class="s1">}</span>
+    <span class="s0">public void </span><span class="s1">recibirCartas(Carta carta){</span>
+            <span class="s1">cartasPorJugador.add(carta)</span><span class="s2">;</span>
+    <span class="s1">}</span>
 
-    <span class="s0">public </span><span class="s1">Jugador </span><span class="s2">(</span><span class="s1">String numeroDeJugador</span><span class="s2">){</span>
-     <span class="s0">this</span><span class="s2">.</span><span class="s1">numeroDeJugador</span><span class="s2">=</span><span class="s1">numeroDeJugador</span><span class="s2">;</span>
-     <span class="s0">this</span><span class="s2">.</span><span class="s1">puntos</span><span class="s2">=</span><span class="s3">0</span><span class="s2">;</span>
-     <span class="s0">this</span><span class="s2">.</span><span class="s1">cartasPorJugador</span><span class="s2">=</span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Carta</span><span class="s2">&gt;();</span>
-<span class="s2">}</span>
-    <span class="s0">public void </span><span class="s1">recibirCartas</span><span class="s2">(</span><span class="s1">Carta carta</span><span class="s2">){</span>
-            <span class="s1">cartasPorJugador</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">carta</span><span class="s2">);</span>
-    <span class="s2">}</span>
+    <span class="s0">public void </span><span class="s1">mostrarMano() {</span>
+        <span class="s1">Collections.sort(</span><span class="s0">this</span><span class="s1">.cartasPorJugador)</span><span class="s2">;</span>
+        <span class="s0">int </span><span class="s1">numeroDeCartaDeljugador=</span><span class="s3">0</span><span class="s2">;</span>
+        <span class="s1">System.out.println(</span><span class="s4">&quot;Mano de &quot; </span><span class="s1">+ numeroDeJugador + </span><span class="s4">&quot;:&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s1">Iterator&lt;Carta&gt; it = cartasPorJugador.iterator()</span><span class="s2">;</span>
+        <span class="s0">while </span><span class="s1">(it.hasNext()) {</span>
+            <span class="s1">numeroDeCartaDeljugador++</span><span class="s2">;</span>
+            <span class="s1">Carta c = it.next()</span><span class="s2">;</span>
+            <span class="s1">opciones.put(numeroDeCartaDeljugador</span><span class="s2">,</span><span class="s1">c)</span><span class="s2">;</span>
+            <span class="s1">System.out.println(numeroDeCartaDeljugador + </span><span class="s4">&quot;- &quot; </span><span class="s1">+ c)</span><span class="s2">;</span>
+        <span class="s1">}</span>
+        <span class="s1">System.out.println()</span><span class="s2">;</span>
+    <span class="s1">}</span>
 
-    <span class="s0">public void </span><span class="s1">mostrarMano</span><span class="s2">() {</span>
-        <span class="s0">int </span><span class="s1">numeroDeCartaDeljugador</span><span class="s2">=</span><span class="s3">0</span><span class="s2">;</span>
-        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Mano de &quot; </span><span class="s2">+ </span><span class="s1">numeroDeJugador </span><span class="s2">+ </span><span class="s4">&quot;:&quot;</span><span class="s2">);</span>
-        <span class="s1">Iterator</span><span class="s2">&lt;</span><span class="s1">Carta</span><span class="s2">&gt; </span><span class="s1">it </span><span class="s2">= </span><span class="s1">cartasPorJugador</span><span class="s2">.</span><span class="s1">iterator</span><span class="s2">();</span>
-        <span class="s0">while </span><span class="s2">(</span><span class="s1">it</span><span class="s2">.</span><span class="s1">hasNext</span><span class="s2">()) {</span>
-            <span class="s1">numeroDeCartaDeljugador</span><span class="s2">++;</span>
-            <span class="s1">Carta c </span><span class="s2">= </span><span class="s1">it</span><span class="s2">.</span><span class="s1">next</span><span class="s2">();</span>
-            <span class="s1">opciones</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">numeroDeCartaDeljugador</span><span class="s2">,</span><span class="s1">c</span><span class="s2">);</span>
-            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">numeroDeCartaDeljugador </span><span class="s2">+ </span><span class="s4">&quot;- &quot; </span><span class="s2">+ </span><span class="s1">c</span><span class="s2">);</span>
-        <span class="s2">}</span>
-        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
-    <span class="s2">}</span>
 
-    <span class="s0">public void </span><span class="s1">recogerDescarte</span><span class="s2">(</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Carta</span><span class="s2">&gt; </span><span class="s1">listacomun</span><span class="s2">){</span>
-            <span class="s0">if</span><span class="s2">(!</span><span class="s1">listacomun</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()){</span>
-                <span class="s1">Carta c</span><span class="s2">=</span><span class="s1">listacomun</span><span class="s2">.</span><span class="s1">removeFirst</span><span class="s2">();</span>
-                <span class="s0">this</span><span class="s2">.</span><span class="s1">cartasPorJugador</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">c</span><span class="s2">);</span>
-                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">c</span><span class="s2">);</span>
-            <span class="s2">}</span>
-    <span class="s2">}</span>
+    <span class="s0">public void </span><span class="s1">mostrarDescarte(List&lt;Carta&gt; listadescarte) {</span>
+        <span class="s0">if </span><span class="s1">(listadescarte.isEmpty()) {</span>
+            <span class="s1">System.out.println(</span><span class="s4">&quot;El mazo de descarte está vacío.&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+            <span class="s1">System.out.println(</span><span class="s4">&quot;Descarte visto por &quot; </span><span class="s1">+ numeroDeJugador + </span><span class="s4">&quot;:&quot;</span><span class="s1">)</span><span class="s2">;</span>
+            <span class="s0">int </span><span class="s1">contador = </span><span class="s3">1</span><span class="s2">;</span>
+            <span class="s1">Iterator&lt;Carta&gt; it = listadescarte.iterator()</span><span class="s2">;</span>
 
-    <span class="s0">public void </span><span class="s1">setHasalido</span><span class="s2">(</span><span class="s0">boolean </span><span class="s1">haSalido</span><span class="s2">){</span>
-        <span class="s0">this</span><span class="s2">.</span><span class="s1">haSalido</span><span class="s2">=</span><span class="s1">haSalido</span><span class="s2">;</span>
-    <span class="s2">}</span>
+            <span class="s0">while </span><span class="s1">(it.hasNext()) {</span>
+                <span class="s1">Carta c = it.next()</span><span class="s2">;</span>
+                <span class="s1">System.out.println(contador + </span><span class="s4">&quot;- &quot; </span><span class="s1">+ c)</span><span class="s2">;</span>
+                <span class="s1">contador++</span><span class="s2">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
 
-    <span class="s0">public </span><span class="s1">Carta elegirCartas</span><span class="s2">(</span><span class="s0">int </span><span class="s1">numero</span><span class="s2">){</span>
-        <span class="s1">Iterator</span><span class="s2">&lt;</span><span class="s1">Carta</span><span class="s2">&gt; </span><span class="s1">it </span><span class="s2">= </span><span class="s1">cartasPorJugador</span><span class="s2">.</span><span class="s1">iterator</span><span class="s2">();</span>
-        <span class="s1">Carta cartaExtraida </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
-        <span class="s1">Carta objetivo</span><span class="s2">=</span><span class="s1">opciones</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">numero</span><span class="s2">);</span>
+    <span class="s0">public void </span><span class="s1">recogerDescarte(List&lt;Carta&gt; listacomun){</span>
+            <span class="s0">if</span><span class="s1">(!listacomun.isEmpty()){</span>
+                <span class="s1">Carta c=listacomun.removeFirst()</span><span class="s2">;</span>
+                <span class="s0">this</span><span class="s1">.cartasPorJugador.add(c)</span><span class="s2">;</span>
+            <span class="s1">}</span>
+    <span class="s1">}</span>
 
-        <span class="s0">while</span><span class="s2">(</span><span class="s1">it</span><span class="s2">.</span><span class="s1">hasNext</span><span class="s2">()){</span>
-           <span class="s1">Carta c</span><span class="s2">=</span><span class="s1">it</span><span class="s2">.</span><span class="s1">next</span><span class="s2">();</span>
-           <span class="s0">if</span><span class="s2">(</span><span class="s1">c</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">objetivo</span><span class="s2">)){</span>
-               <span class="s1">cartaExtraida</span><span class="s2">=</span><span class="s1">c</span><span class="s2">;</span>
-               <span class="s1">it</span><span class="s2">.</span><span class="s1">remove</span><span class="s2">();</span>
+    <span class="s0">public void </span><span class="s1">setHasalido(</span><span class="s0">boolean </span><span class="s1">haSalido){</span>
+        <span class="s0">this</span><span class="s1">.haSalido=haSalido</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Carta elegirCarta(</span><span class="s0">int </span><span class="s1">numero){</span>
+        <span class="s1">Iterator&lt;Carta&gt; it = cartasPorJugador.iterator()</span><span class="s2">;</span>
+        <span class="s1">Carta cartaExtraida = </span><span class="s0">null</span><span class="s2">;</span>
+        <span class="s1">Carta objetivo=opciones.get(numero)</span><span class="s2">;</span>
+        <span class="s0">while</span><span class="s1">(it.hasNext()){</span>
+           <span class="s1">Carta c=it.next()</span><span class="s2">;</span>
+           <span class="s0">if</span><span class="s1">(c.equals(objetivo)){</span>
+               <span class="s1">cartaExtraida=c</span><span class="s2">;</span>
+               <span class="s1">it.remove()</span><span class="s2">;</span>
                <span class="s0">break</span><span class="s2">;</span>
-
-           <span class="s2">}</span>
-                   <span class="s2">}</span>
+           <span class="s1">}</span>
+                   <span class="s1">}</span>
         <span class="s0">return </span><span class="s1">cartaExtraida</span><span class="s2">;</span>
-    <span class="s2">}</span>
+    <span class="s1">}</span>
 
+    <span class="s0">public </span><span class="s1">List  sacarCartas(List &lt;Carta&gt; listaMazo) {</span>
+        <span class="s0">while </span><span class="s1">(numero != </span><span class="s3">0</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s4">&quot;Introduce el numero, cero para salir&quot;</span><span class="s1">)</span><span class="s2">;</span>
+            <span class="s1">numero = scan.nextInt()</span><span class="s2">;</span>
+            <span class="s1">Carta seleccionada = elegirCarta(numero)</span><span class="s2">;</span>
+            <span class="s0">if </span><span class="s1">(seleccionada != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">listaMazo.add(seleccionada)</span><span class="s2">;</span>
+                <span class="s1">System.out.println(</span><span class="s4">&quot;Has añadido: &quot; </span><span class="s1">+ seleccionada)</span><span class="s2">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">System.out.println(</span><span class="s4">&quot;¡Error! El número &quot; </span><span class="s1">+ numero + </span><span class="s4">&quot; no corresponde a ninguna carta.&quot;</span><span class="s1">)</span><span class="s2">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">listaMazo</span><span class="s2">;</span>
+    <span class="s1">}</span>
 
-<span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">List&lt;Carta&gt; hacerBackupmanoJugador(){</span>
+        <span class="s0">this</span><span class="s1">.backupCartasPorJugador=</span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;(cartasPorJugador)</span><span class="s2">;</span>
+        <span class="s0">return this</span><span class="s1">.backupCartasPorJugador</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">restaurarmano(){</span>
+        <span class="s0">if</span><span class="s1">(</span><span class="s0">this</span><span class="s1">.backupCartasPorJugador!=</span><span class="s0">null</span><span class="s1">){</span>
+            <span class="s0">this</span><span class="s1">.cartasPorJugador=</span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;(backupCartasPorJugador)</span><span class="s2">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">alguienHaGanado(List &lt;Carta&gt; cartasPorJugador){</span>
+        <span class="s0">if </span><span class="s1">(!cartasPorJugador.isEmpty()){</span>
+            <span class="s0">return false</span><span class="s2">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return true</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">isHaSalido(){</span>
+        <span class="s0">return this</span><span class="s1">.haSalido</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">List&lt;Carta&gt; getCartasPorJugador() {</span>
+        <span class="s0">return </span><span class="s1">cartasPorJugador</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">volverLaCartaAlMazodeJugador(Carta crt) {</span>
+        <span class="s0">this</span><span class="s1">.cartasPorJugador.add(crt)</span><span class="s2">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
 </pre>
 </body>
 </html>

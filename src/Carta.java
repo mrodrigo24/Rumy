@@ -1,17 +1,10 @@
 public class Carta implements Comparable <Carta>{
-    private Valores valor;
+    private Simbolo simbolo;
     private Palos  palo;
-    public Carta(Valores valor,Palos palo){
-        this.valor=valor;
+
+    public Carta(Simbolo simbolo,Palos palo){
+        this.simbolo=simbolo;
         this.palo=palo;
-    }
-
-    public Valores getValor() {
-        return valor;
-    }
-
-    public void setValor(Valores valor) {
-        this.valor = valor;
     }
 
     public Palos getPalo() {
@@ -22,19 +15,21 @@ public class Carta implements Comparable <Carta>{
         this.palo = palo;
     }
 
+    public Simbolo getSimbolo() {
+        return simbolo;
+    }
+
+    public void setSimbolo(Simbolo simbolo) {
+        this.simbolo = simbolo;
+    }
+
     @Override
     public int compareTo(Carta crt) {
-
-        int compNumero = Integer.compare(this.valor.getNumero(), crt.getValor().getNumero());
-
-        if (compNumero != 0) {
-            return compNumero;
-        }
-
-        return this.palo.compareTo(crt.getPalo());
+        return Integer.compare(this.simbolo.getValorNumerico(), crt.simbolo.getValorNumerico());
     }
+
     @Override
     public String toString() {
-        return " (" + valor + " de " +palo + ')';
+        return "[" + simbolo.getRepresentacion() + " de " + palo + "]";
     }
 }

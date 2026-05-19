@@ -13,6 +13,14 @@ public class Jugador {
      this.puntos=0;
      this.cartasPorJugador=new ArrayList<Carta>();
 }
+
+    public void repartir(Mazo mazoDelJuego){
+            for (int j = 0; j < 10; j++) {
+                recibirCartas(mazoDelJuego.cogerCarta());
+            }
+    }
+
+
     public void recibirCartas(Carta carta){
             cartasPorJugador.add(carta);
     }
@@ -78,6 +86,9 @@ public class Jugador {
         while (numero != 0) {
             System.out.println("Introduce el numero, cero para salir");
             numero = scan.nextInt();
+            if (numero == 0) {
+                break;
+            }
             Carta seleccionada = elegirCarta(numero);
             if (seleccionada != null) {
                 listaMazo.add(seleccionada);
@@ -105,6 +116,46 @@ public class Jugador {
             return false;
         }
         return true;
+    }
+    public void deDondeRobar(List <Carta> descarte, Mazo mazo){
+        if (descarte.isEmpty()) {
+            System.out.println("El mazo de descarte está vacío. Robas del mazo principal automáticamente.");
+            recibirCartas(mazo.cogerCarta());
+            return;
+        }
+        System.out.println("Última carta en el descarte: " + descarte.getLast());
+        System.out.println("¿De dónde quieres robar? \n1 - Mazo Principal (Oculta) \n2 - Mazo de Descarte");
+        numero = scan.nextInt();
+        switch (numero){
+            case 1:
+                recibirCartas(mazo.cogerCarta());
+                break;
+            case 2:
+                recogerDescarte(descarte);
+                break;
+            default:
+                System.out.println("Opción no válida. Por defecto robas del mazo principal.");
+                recibirCartas(mazo.cogerCarta());
+                break;
+        }
+    }
+
+    public Carta hacerDescarte() {
+        Carta cartaTirada = null;
+
+
+        while (cartaTirada == null) {
+            System.out.println("¿Qué número de carta quieres descartar?");
+            numero = scan.nextInt();
+
+            cartaTirada = elegirCarta(numero);
+
+            if (cartaTirada == null) {
+                System.out.println("¡Error! Ese número no corresponde a ninguna carta de tu mano. Inténtalo de nuevo.");
+            }
+        }
+
+        return cartaTirada;
     }
 
     public boolean isHaSalido(){
