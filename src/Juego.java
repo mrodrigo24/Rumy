@@ -38,10 +38,10 @@ public class Juego {
                     jugadorActual.mostrarMano();
                     System.out.println("Tira una carta a la mesa");
                 }
-
+            }
                 descarte.add(jugadorActual.hacerDescarte());
 
-                // FINAL DEL TURNO: Estas líneas deben ejecutarse SIEMPRE (fuera de los IF de arriba)
+
                 jugadaTemporal.clear();
                 if (!alguienHaGanado) {
                     turno = (turno + 1) % 4;
@@ -50,7 +50,7 @@ public class Juego {
             }
         }
     }
-}
+
 
 
 

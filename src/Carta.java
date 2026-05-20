@@ -1,12 +1,16 @@
 public class Carta implements Comparable <Carta>{
     private Simbolo simbolo;
     private Palos  palo;
+    Valores valorPorCarta;
 
-    public Carta(Simbolo simbolo,Palos palo){
+    public Carta(Simbolo simbolo,Palos palo,Valores valorPorCarta){
         this.simbolo=simbolo;
         this.palo=palo;
+        this.valorPorCarta=valorPorCarta;
     }
-
+    public Valores getValorPorCarta() {
+        return valorPorCarta;
+    }
     public Palos getPalo() {
         return palo;
     }

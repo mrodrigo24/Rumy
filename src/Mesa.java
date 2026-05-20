@@ -32,7 +32,6 @@ public class Mesa {
         mazoDescarte.add(crt);
     }
 
-
     public String toString() {
 
         // Usamos StringBuilder para ir pegando los textos de forma eficiente
@@ -53,7 +52,6 @@ public class Mesa {
             numeroJugada++;
         }
         sb.append("==========================");
-
         return sb.toString(); // Devolvemos el texto completo ya montado
     }
 }

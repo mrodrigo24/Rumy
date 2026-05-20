@@ -17,10 +17,8 @@ public enum Valores {
     Valores(int numero){
         this.numero=numero;
     }
-
     public int getNumero() {
         return numero;
     }
-
 
 }
