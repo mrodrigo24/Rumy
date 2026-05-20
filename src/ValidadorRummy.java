@@ -40,7 +40,6 @@ public class ValidadorRummy {
         return true;
     }
 
-
     public boolean Escaleras(List<Carta> listaRecibida) {
         // 1. El mínimo siempre primero
         if (listaRecibida.size() < 3) {
@@ -64,11 +63,10 @@ public class ValidadorRummy {
             }
 
             // Comprobamos que el número sea exactamente uno más que el anterior
-            if (actual.getSimbolo().getValorNumerico() != anterior.getSimbolo().getValorNumerico()+ 1) {
+            if (actual.getValorPorCarta().getNumero() != anterior.getValorPorCarta().getNumero()+ 1) {
                 return false;
             }
         }
-
         return true; // Si pasa todo el bucle, es una escalera perfecta
     }
 
