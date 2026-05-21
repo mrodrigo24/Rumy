@@ -58,7 +58,7 @@ public class Jugador {
 
     public void recogerDescarte(List<Carta> listacomun){
             if(!listacomun.isEmpty()){
-                Carta c=listacomun.removeFirst();
+                Carta c=listacomun.removeLast();
                 this.cartasPorJugador.add(c);
             }
     }

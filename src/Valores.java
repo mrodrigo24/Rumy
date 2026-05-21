@@ -11,8 +11,8 @@ public enum Valores {
     DIEZ(10),
     J(11),
     Q(12),
-    K(13);
-
+    K(13),
+    COMODIN(0);
     private int numero;
     Valores(int numero){
         this.numero=numero;

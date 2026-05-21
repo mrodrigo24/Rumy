@@ -1,30 +1,44 @@
 import java.util.*;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class ValidadorRummy {
-
+    private final int PUNTOS_MINIMOS_SALIDA = 10;
     public int sumaPuntos(List<Carta> listaRecibida) {
-        int sumaPuntos = 0;
+        int sumaTotal = 0;
         Collections.sort(listaRecibida);
-        Iterator<Carta> it = listaRecibida.iterator();
-        while (it.hasNext()) {
-            Carta actual = it.next();
-            if(Grupos(listaRecibida)){
-                Carta cartaReal=actual.getSimbolo().getValorNumerico();
-                sumaPuntos += actual.getSimbolo().getValorNumerico();
-            } else {
 
+        if (Grupos(listaRecibida)){
+            int valorGrupo=0;
+            for(Carta c: listaRecibida){
+                if(c.getSimbolo()!=Simbolo.COMODIN){
+                    valorGrupo=c.getSimbolo().getValorNumerico();
+                    break;
+                }
             }
+            sumaTotal=valorGrupo* listaRecibida.size();
+        } else {
+            //Es Escalera
+            int contadorComodines = 0;
+            int valorPrimeraCartaReal = 0;
 
+            for (Carta c : listaRecibida) {
+                if (c.getSimbolo() == Simbolo.COMODIN) {
+                    contadorComodines++;
+                } else {
+                    valorPrimeraCartaReal = c.getSimbolo().getValorNumerico();
+                    break;
+                }
+            }
+            int inicio = valorPrimeraCartaReal - contadorComodines;
+            for (int i = 0; i < listaRecibida.size(); i++) {
+                sumaTotal += (inicio + i);
+            }
+        }
+        return sumaTotal;
         }
 
 
-        System.out.println(sumaPuntos);
-        System.out.println("Ha pasado 2");
-        return sumaPuntos;
-    }
 
 
 
@@ -133,7 +147,7 @@ public class ValidadorRummy {
         }
 
         if (!jugadorActual.isHaSalido()) {
-            if (sumaPuntos(jugadaTemporal) >= 30) {
+            if (sumaPuntos(jugadaTemporal) >= PUNTOS_MINIMOS_SALIDA) {
                 jugadorActual.setHasalido(true);
                 System.out.println("Ha pasado 1");
                 return true;
@@ -144,7 +158,9 @@ public class ValidadorRummy {
         }
         return true;
     }
+
 }
+
 
 
 
