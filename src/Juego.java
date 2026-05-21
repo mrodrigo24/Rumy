@@ -26,13 +26,13 @@ public class Juego {
                 if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
                     System.out.println("Jugada válida.");
                     mesa.agregarJugada(jugadaTemporal);
+                    jugadorActual.mostrarMano();
                     if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
                         alguienHaGanado = true;
                         System.out.println("¡Ganador: " + jugadorActual + "!");
                     }
                 } else {
-                    // Si la jugada NO es válida, devolvemos las cartas
-
+                    // devolvemos las cartas
                     System.out.println("Jugada inválida o puntos insuficientes.");
                     jugadorActual.restaurarmano();
                     jugadorActual.mostrarMano();
@@ -40,8 +40,8 @@ public class Juego {
                 }
             }
                 descarte.add(jugadorActual.hacerDescarte());
-
-
+                mesa.imprimirMesa(mesa.getJugadasEnMesa());
+               //System.out.println("La mesa es"+mesa);
                 jugadaTemporal.clear();
                 if (!alguienHaGanado) {
                     turno = (turno + 1) % 4;
