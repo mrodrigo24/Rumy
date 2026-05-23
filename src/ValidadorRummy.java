@@ -38,9 +38,9 @@ public class ValidadorRummy {
         return sumaTotal;
         }
 
-
-
-
+    public int getPUNTOS_MINIMOS_SALIDA() {
+        return PUNTOS_MINIMOS_SALIDA;
+    }
 
     public boolean Grupos(List<Carta> listaRecibida) {
         if (listaRecibida.size() < 3) return false;
@@ -76,21 +76,21 @@ public class ValidadorRummy {
 
     public boolean Escaleras(List<Carta> listaRecibida) {
 
-        // 1. El mínimo siempre primero
+        // primero miramos el minimo
         if (listaRecibida.size() < 3) {
             return false;
         }
         Palos paloReferencia = null;
         List<Integer> numerosEnteros=new ArrayList<>();
         int contadorDeComodines=0;
-        // 2. Ordenar es vital para que n, n+1, n+2 funcione
+        //ordenamos segun el interface Comparable de Cartas
         Collections.sort(listaRecibida);
 
-        // 3. Tomamos la referencia del primer palo
+        // Cogemos el pirmer palo
         for (Carta c : listaRecibida) {
             if (c.getSimbolo() != Simbolo.COMODIN) {
                 paloReferencia = c.getPalo();
-                break; // ¡Encontrado! Salimos del bucle inmediatamente
+                break;
             }
         }
 
@@ -98,18 +98,18 @@ public class ValidadorRummy {
             if(c.getSimbolo()==Simbolo.COMODIN){
                 contadorDeComodines++;
             } else{
-                numerosEnteros.add(c.getValorPorCarta().getNumero());
+                numerosEnteros.add(c.getSimbolo().getOrdenEscalera());
             }
 
         }
         for (Carta c : listaRecibida) {
             if (c.getSimbolo() != Simbolo.COMODIN && !c.getPalo().equals(paloReferencia)) {
-                return false; // Si una carta real tiene otro palo, no es escalera
+                return false; // si una carta tiene otro palo no es escalera
             }
         }
 
 
-        // 4. Empezamos a comparar desde la segunda carta (índice 1)
+        //Empezmos a comparar desde la segunda carta
         for (int i = 0; i < numerosEnteros.size() - 1; i++) {
             int actual = numerosEnteros.get(i);
             int siguiente = numerosEnteros.get(i + 1);
@@ -159,6 +159,11 @@ public class ValidadorRummy {
         return true;
     }
 
+    public boolean comprobarAmpliacion(List<Carta> jugadaMesa, Carta nuevaCarta){
+        List<Carta> copia = new ArrayList<>(jugadaMesa);
+        copia.add(nuevaCarta);
+        return Grupos(copia) || Escaleras(copia);
+    }
 }
 
 

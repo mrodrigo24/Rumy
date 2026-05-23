@@ -12,17 +12,18 @@ public class Mazo {
     }
 
     public void inicializarMazo(){
-        Valores[] arrayValores = Valores.values();
+        //Valores[] arrayValores = Valores.values();
        for(Simbolo v:Simbolo.values()){
            if (v == Simbolo.COMODIN) continue;
            for (Palos p :Palos.values()) {
                if (p == Palos.COMODIN) continue;
-               Valores h = arrayValores[v.ordinal()];
-               cartas.add(new Carta(v, p, h));
+
+               //Valores h = arrayValores[v.ordinal()];
+               cartas.add(new Carta(v, p));
            }
        }
-        cartas.add(new Carta(Simbolo.COMODIN, Palos.COMODIN, Valores.COMODIN));
-        cartas.add(new Carta(Simbolo.COMODIN, Palos.COMODIN, Valores.COMODIN));
+        cartas.add(new Carta(Simbolo.COMODIN, Palos.COMODIN));
+        cartas.add(new Carta(Simbolo.COMODIN, Palos.COMODIN));
     }
 
     public void barajar(){

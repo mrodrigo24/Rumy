@@ -1,55 +1,95 @@
 import java.util.*;
 public class Juego {
     public static void main(String[] args) {
-        int numero = -1;
+        Scanner scan = new Scanner(System.in);
         boolean alguienHaGanado = false;
+        int turno = 0;
+        int opcion;
         Mazo maz = new Mazo(2);
         Mesa mesa = new Mesa();
-        List<Carta> descarte = new ArrayList<>();
-        List<Jugador> jugadores = new ArrayList<>();
+        List<Jugador> jugadores = mesa.prepararJugadores(maz);
         List<Carta> jugadaTemporal = new ArrayList<>();
         ValidadorRummy valRumy = new ValidadorRummy();
-        int turno = 0;
-        for (int i = 0; i < 4; i++) {
-            jugadores.add(new Jugador("Jugador" + (i)));
-            jugadores.get(i).repartir(maz);
-        }
 
         while (!alguienHaGanado) {
-            Jugador jugadorActual = jugadores.get(turno);
-            jugadorActual.deDondeRobar(descarte,maz);
+            Jugador jugadorActual = jugadores.get(turno);//primero cogemos turno
             jugadorActual.hacerBackupmanoJugador();
-            jugadorActual.mostrarMano();
-            jugadorActual.sacarCartas(jugadaTemporal);
 
-            if (!jugadaTemporal.isEmpty()) {
-                if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
-                    System.out.println("Jugada válida.");
-                    mesa.agregarJugada(jugadaTemporal);
-                    jugadorActual.mostrarMano();
-                    if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
-                        alguienHaGanado = true;
-                        System.out.println("¡Ganador: " + jugadorActual + "!");
+            // --- mostramos mesa y  mano ---
+            System.out.println("\n=== ESTADO DE LA MESA ===");
+            mesa.imprimirMesa(mesa.getJugadasEnMesa());
+            System.out.println("==========================");
+            System.out.println("\nAntes de robar:");
+            jugadorActual.mostrarMano();
+            jugadorActual.deDondeRobar(mesa, maz);//preguntamos de donde sacamos del mazo o de la mesa
+            //jugadorActual.mostrarMano();
+
+            //Camino A, el jugador aun no ha salido
+            if (!jugadorActual.isHaSalido()) {  //Sihasalidocon10
+                System.out.println("\nNo has salido. Intenta hacer tus " + valRumy.getPUNTOS_MINIMOS_SALIDA() + " puntos");
+                //jugadorActual.mostrarMano();
+                jugadorActual.sacarCartas(jugadaTemporal);
+
+                if (!jugadaTemporal.isEmpty()) {
+                    if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
+                        System.out.println("Jugada válida. Has salido");
+                        mesa.agregarJugada(jugadaTemporal);
+                        jugadorActual.setHasalido(true);
+                        jugadorActual.mostrarMano();
+
+                        if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
+                            alguienHaGanado = true;
+                            System.out.println("¡Ganador: " + jugadorActual + "!");
+                        }
+                    } else {
+                        System.out.println("Jugada inválida o puntos insuficientes.");
+                        jugadorActual.restaurarmano();
+                        jugadorActual.mostrarMano();
                     }
-                } else {
-                    // devolvemos las cartas
-                    System.out.println("Jugada inválida o puntos insuficientes.");
-                    jugadorActual.restaurarmano();
-                    jugadorActual.mostrarMano();
-                    System.out.println("Tira una carta a la mesa");
+                }
+            } else {
+                System.out.println("\n¿Qué deseas hacer? \n1 - crear una nueva jugada \n2 - anyadir una carta a la mesa");
+                opcion = LectorTeclado.leerEnteroEnRango(1, 2);
+
+
+                if (opcion == 1) {
+                    jugadorActual.sacarCartas(jugadaTemporal);
+                    if (!jugadaTemporal.isEmpty()) {
+                        if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
+                            System.out.println("Jugada Valida");
+                            mesa.agregarJugada(jugadaTemporal);
+                            jugadorActual.mostrarMano();
+
+                            if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
+                                alguienHaGanado = true;
+                                System.out.println("Ganador" + jugadorActual + "!");
+
+                            }
+                        } else {
+                            System.out.println("Jugada Invalidad");
+                            jugadorActual.restaurarmano();
+                            jugadorActual.mostrarMano();
+                        }
+                    }
+                } else if (opcion == 2) {
+                    jugadorActual.seleccionarCartaParaMesa(mesa, valRumy);
                 }
             }
-                descarte.add(jugadorActual.hacerDescarte());
-                mesa.imprimirMesa(mesa.getJugadasEnMesa());
-               //System.out.println("La mesa es"+mesa);
+
+            //final de turno
+            if (!alguienHaGanado){
+                mesa.tirarAlDescarte(jugadorActual.hacerDescarte());
                 jugadaTemporal.clear();
-                if (!alguienHaGanado) {
-                    turno = (turno + 1) % 4;
-                    System.out.println("\n--- CAMBIO DE TURNO ---");
-                }
+                turno = (turno + 1) % 4;
+                System.out.println("\n--- CAMBIO DE TURNO ---");
             }
-        }
-    }
+
+         } //cierre de while
+        }//cierre de main
+    }//cierre de juego
+
+
+
 
 
 

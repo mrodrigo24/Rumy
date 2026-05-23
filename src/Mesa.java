@@ -1,14 +1,11 @@
-
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.StringBuilder;
 
-
 public class Mesa {
-
+    private List<Jugador> jugadores = new ArrayList<>();
     private List<List<Carta>> jugadasEnMesa;
     private List<Carta> mazoDescarte;
-
 
     public Mesa() {
         this.jugadasEnMesa = new ArrayList<>();
@@ -19,21 +16,46 @@ public class Mesa {
         return jugadasEnMesa;
     }
 
+    public List<Carta> getMazoDescarte() {
+        return mazoDescarte;
+    }
+    public List<Jugador> prepararJugadores(Mazo mazo) {
+        for (int i = 0; i < 4; i++) {
+            Jugador nuevoJugador = new Jugador("Jugador" + i);
+            nuevoJugador.repartir(mazo);
+            this.jugadores.add(nuevoJugador);
+        }
+        return this.jugadores;
+    }
+
     public void agregarJugada(List<Carta> jugadaTemporal) {
         List<Carta> copiaJugada = new ArrayList<>(jugadaTemporal);
         this.jugadasEnMesa.add(copiaJugada);
     }
 
-    public Carta robarDelMazo(List<Carta> mazoDescarte) {
+    public Carta robarDelMazo() {
         if (!mazoDescarte.isEmpty()) {
             return mazoDescarte.removeLast();
         }
         return null;
     }
-
     public void tirarAlDescarte(Carta crt) {
         mazoDescarte.add(crt);
     }
+
+    public void anyadirCartaAJugada(int indiceJugada, Carta carta) {
+          jugadasEnMesa.get(indiceJugada).add(carta);
+    }
+
+        public void imprimirMesa (List < List < Carta >> jugadasEnMesa) {
+
+            for (List<Carta> jugada : jugadasEnMesa) {
+                for (Carta carta : jugada) {
+                    System.out.print(carta + " ");
+                }
+                System.out.println();
+            }
+        }
 
     public String toString() {
 
@@ -56,20 +78,6 @@ public class Mesa {
         sb.append("==========================");
         return sb.toString(); // texto
     }
-
-    public void anyadirCartaAJugada(int indiceJugada, Carta carta) {
-          jugadasEnMesa.get(indiceJugada).add(carta);
-    }
-
-        public void imprimirMesa (List < List < Carta >> jugadasEnMesa) {
-
-            for (List<Carta> jugada : jugadasEnMesa) {
-                for (Carta carta : jugada) {
-                    System.out.print(carta + " ");
-                }
-                System.out.println();
-            }
-        }
 
 
 }

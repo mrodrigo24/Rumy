@@ -1,16 +1,13 @@
 public class Carta implements Comparable <Carta>{
     private Simbolo simbolo;
     private Palos  palo;
-    Valores valorPorCarta;
 
-    public Carta(Simbolo simbolo,Palos palo,Valores valorPorCarta){
+
+    public Carta(Simbolo simbolo,Palos palo){
         this.simbolo=simbolo;
         this.palo=palo;
-        this.valorPorCarta=valorPorCarta;
     }
-    public Valores getValorPorCarta() {
-        return valorPorCarta;
-    }
+
     public Palos getPalo() {
         return palo;
     }
@@ -29,7 +26,7 @@ public class Carta implements Comparable <Carta>{
 
     @Override
     public int compareTo(Carta crt) {
-        return Integer.compare(this.simbolo.getValorNumerico(), crt.simbolo.getValorNumerico());
+        return Integer.compare(this.simbolo.getOrdenEscalera(), crt.simbolo.getOrdenEscalera());
     }
 
     @Override

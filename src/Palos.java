@@ -1,9 +1,9 @@
 public enum Palos {
-    CORAZONES("♥", "\u001B[31m"),    // Rojo (Se ve bien en ambos)
-    DIAMANTES("♦", "\u001B[31m"),    // Rojo (Se ve bien en ambos)
-    PICAS("♠", "\u001B[37m"),        // Blanco (Se verá en fondo negro)
+    CORAZONES("♥", "\u001B[31m"),    // Rojo
+    DIAMANTES("♦", "\u001B[31m"),    // Rojo
+    PICAS("♠", "\u001B[37m"),        // Blanco
     TREBOLES("♣", "\u001B[34m"),
-    COMODIN("🃏", "\u001B[35m");     // Azul (Opcional, para diferenciar de las picas)
+    COMODIN("🃏", "\u001B[35m");     // Azul
 
     private final String icono;
     private final String color;

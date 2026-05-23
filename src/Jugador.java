@@ -20,7 +20,6 @@ public class Jugador {
             }
     }
 
-
     public void recibirCartas(Carta carta){
             cartasPorJugador.add(carta);
     }
@@ -38,7 +37,6 @@ public class Jugador {
         }
         System.out.println();
     }
-
 
     public void mostrarDescarte(List<Carta> listadescarte) {
         if (listadescarte.isEmpty()) {
@@ -117,13 +115,13 @@ public class Jugador {
         }
         return true;
     }
-    public void deDondeRobar(List <Carta> descarte, Mazo mazo){
-        if (descarte.isEmpty()) {
-            System.out.println("El mazo de descarte está vacío. Robas del mazo principal automáticamente.");
+    public void deDondeRobar(Mesa mesa, Mazo mazo){
+        if (mesa.getMazoDescarte().isEmpty()) {
+            System.out.println("El mazo de descarte vacío. Robas del mazo principal.");
             recibirCartas(mazo.cogerCarta());
             return;
         }
-        System.out.println("Última carta en el descarte: " + descarte.getLast());
+        System.out.println("Última carta en el descarte: " + mesa.getMazoDescarte().getLast());
         System.out.println("¿De dónde quieres robar? \n1 - Mazo Principal (Oculta) \n2 - Mazo de Descarte");
         numero = scan.nextInt();
         switch (numero){
@@ -131,10 +129,10 @@ public class Jugador {
                 recibirCartas(mazo.cogerCarta());
                 break;
             case 2:
-                recogerDescarte(descarte);
+                recogerDescarte(mesa.getMazoDescarte());
                 break;
             default:
-                System.out.println("Opción no válida. Por defecto robas del mazo principal.");
+                System.out.println("Robas del mazo principal.");
                 recibirCartas(mazo.cogerCarta());
                 break;
         }
@@ -143,20 +141,52 @@ public class Jugador {
     public Carta hacerDescarte() {
         Carta cartaTirada = null;
 
-
         while (cartaTirada == null) {
-            System.out.println("¿Qué número de carta quieres descartar?");
+            System.out.println("¿Qué numero de carta quieres descartar?");
             numero = scan.nextInt();
 
             cartaTirada = elegirCarta(numero);
 
             if (cartaTirada == null) {
-                System.out.println("¡Error! Ese número no corresponde a ninguna carta de tu mano. Inténtalo de nuevo.");
+                System.out.println("¡Error! Ese numero no corresponde a ninguna carta de tu mano. nuevamente.");
             }
         }
-
         return cartaTirada;
     }
+    public Carta seleccionarCartaParaMesa(Mesa mesa, ValidadorRummy valRumy) {
+        System.out.println("que carta quieres agregar a la mesa?");
+        int numeroJugada = scan.nextInt();
+        Carta cartaSeleccionada = elegirCarta(numeroJugada);
+        if (cartaSeleccionada != null) {
+            validarColocacionEnMesa(cartaSeleccionada, mesa, valRumy);
+        } else {
+            System.out.println("El numero da error");
+        }
+        return cartaSeleccionada;
+    }
+
+    private void validarColocacionEnMesa(Carta carta, Mesa mesa, ValidadorRummy valRumy) {
+        System.out.println("¿numero de jugada de la mesa para anyadir?");
+        int numJugada = scan.nextInt();
+        int indiceMesa = numJugada - 1;
+
+        if (indiceMesa >= 0 && indiceMesa < mesa.getJugadasEnMesa().size()) {
+            List<Carta> jugadaObjetivo = mesa.getJugadasEnMesa().get(indiceMesa);
+            // Validamos si la carta encaja
+            if (valRumy.comprobarAmpliacion(jugadaObjetivo, carta)) {
+                System.out.println("ok Carta anyadida a la jugada " + numJugada + ".");
+                mesa.anyadirCartaAJugada(indiceMesa, carta);
+            } else {
+                System.out.println("Movimiento no valido. La carta regresa a tu mano.");
+                volverLaCartaAlMazodeJugador(carta);
+            }
+        } else {
+            System.out.println("no existe en la mesa. La carta regresa a tu mano.");
+            volverLaCartaAlMazodeJugador(carta);
+        }
+    }
+
+
 
     public boolean isHaSalido(){
         return this.haSalido;
