@@ -2,17 +2,17 @@ import java.util.*;
 public class Jugador {
     private String numeroDeJugador;
     private int puntos;
-    private List<Carta> cartasPorJugador;
+    private List<Carta> cartasPorJugador;//La mano de cada jugador
     private List<Carta> backupCartasPorJugador;
     Map<Integer, Carta> opciones = new HashMap<>();
     private boolean haSalido=false;
     Scanner scan = new Scanner(System.in);
-    int numero = -1;
+    //int numero = -1;
     public Jugador (String numeroDeJugador){
-     this.numeroDeJugador=numeroDeJugador;
-     this.puntos=0;
-     this.cartasPorJugador=new ArrayList<Carta>();
-}
+         this.numeroDeJugador=numeroDeJugador;
+         this.puntos=0;
+         this.cartasPorJugador=new ArrayList<Carta>();
+    }
 
     public void repartir(Mazo mazoDelJuego){
             for (int j = 0; j < 10; j++) {
@@ -65,25 +65,33 @@ public class Jugador {
         this.haSalido=haSalido;
     }
 
-    public Carta elegirCarta(int numero){
+    /*public Carta elegirCarta(int numero){
         Iterator<Carta> it = cartasPorJugador.iterator();
         Carta cartaExtraida = null;
-        Carta objetivo=opciones.get(numero);
+        Carta objetivo=opciones.get(numero-1);
         while(it.hasNext()){
            Carta c=it.next();
            if(c.equals(objetivo)){
                cartaExtraida=c;
-               it.remove();
+               //it.remove();
                break;
            }
                    }
         return cartaExtraida;
+    }*/
+    public Carta elegirCarta(int numero) {
+        Carta cartaExtraida = cartasPorJugador.get(numero - 1);
+        cartasPorJugador.set(numero - 1, null);
+        return cartaExtraida;
+
     }
 
+
     public List  sacarCartas(List <Carta> listaMazo) {
+        int numero = -1;
         while (numero != 0) {
             System.out.println("Introduce el numero, cero para salir");
-            numero = scan.nextInt();
+             numero=LectorTeclado.leerEnteroEnRango(0,cartasPorJugador.size());
             if (numero == 0) {
                 break;
             }
@@ -92,7 +100,7 @@ public class Jugador {
                 listaMazo.add(seleccionada);
                 System.out.println("Has añadido: " + seleccionada);
             } else {
-                System.out.println("¡Error! El número " + numero + " no corresponde a ninguna carta.");
+               System.out.println("¡Error! El número " + numero + " no corresponde a ninguna carta.");
             }
         }
         return listaMazo;
@@ -123,7 +131,7 @@ public class Jugador {
         }
         System.out.println("Última carta en el descarte: " + mesa.getMazoDescarte().getLast());
         System.out.println("¿De dónde quieres robar? \n1 - Mazo Principal (Oculta) \n2 - Mazo de Descarte");
-        numero = scan.nextInt();
+        int numero = scan.nextInt();
         switch (numero){
             case 1:
                 recibirCartas(mazo.cogerCarta());
@@ -143,7 +151,7 @@ public class Jugador {
 
         while (cartaTirada == null) {
             System.out.println("¿Qué numero de carta quieres descartar?");
-            numero = scan.nextInt();
+            int numero = scan.nextInt();
 
             cartaTirada = elegirCarta(numero);
 
@@ -153,6 +161,7 @@ public class Jugador {
         }
         return cartaTirada;
     }
+
     public Carta seleccionarCartaParaMesa(Mesa mesa, ValidadorRummy valRumy) {
         System.out.println("que carta quieres agregar a la mesa?");
         int numeroJugada = scan.nextInt();
@@ -177,16 +186,25 @@ public class Jugador {
                 System.out.println("ok Carta anyadida a la jugada " + numJugada + ".");
                 mesa.anyadirCartaAJugada(indiceMesa, carta);
             } else {
-                System.out.println("Movimiento no valido. La carta regresa a tu mano.");
+                System.out.println("Movimiento no valido. carta regresa a mano.");
                 volverLaCartaAlMazodeJugador(carta);
             }
         } else {
-            System.out.println("no existe en la mesa. La carta regresa a tu mano.");
+            System.out.println("carta no existe en mesa, regresa a mano.");
             volverLaCartaAlMazodeJugador(carta);
         }
     }
-
-
+    public void eliminarCartasDelaMano(List<Carta> ListaTemporal) {
+        List<Carta> sacoDeNulls = new ArrayList<>();
+        cartasPorJugador.removeAll(ListaTemporal);
+        sacoDeNulls.add(null);
+        cartasPorJugador.removeAll(sacoDeNulls);
+    }
+    public void limpiarVaciosDeLaMano() {
+        List<Carta> sacoDeNulls = new ArrayList<>();
+        sacoDeNulls.add(null);
+        this.cartasPorJugador.removeAll(sacoDeNulls);
+    }
 
     public boolean isHaSalido(){
         return this.haSalido;

@@ -4,7 +4,7 @@ import java.lang.StringBuilder;
 
 public class Mesa {
     private List<Jugador> jugadores = new ArrayList<>();
-    private List<List<Carta>> jugadasEnMesa;
+    private List<List<Carta>> jugadasEnMesa;//lista de listas de jugadas en mesa
     private List<Carta> mazoDescarte;
 
     public Mesa() {

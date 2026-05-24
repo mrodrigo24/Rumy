@@ -7,13 +7,13 @@ public class Juego {
         int opcion;
         Mazo maz = new Mazo(2);
         Mesa mesa = new Mesa();
-        List<Jugador> jugadores = mesa.prepararJugadores(maz);
-        List<Carta> jugadaTemporal = new ArrayList<>();
+        List<Jugador> jugadores = mesa.prepararJugadores(maz);//Lista de jugadores
+        List<Carta> jugadaTemporal = new ArrayList<>();// jugadaIntermedia esta entre la mesa y el jugador
         ValidadorRummy valRumy = new ValidadorRummy();
 
         while (!alguienHaGanado) {
             Jugador jugadorActual = jugadores.get(turno);//primero cogemos turno
-            jugadorActual.hacerBackupmanoJugador();
+
 
             // --- mostramos mesa y  mano ---
             System.out.println("\n=== ESTADO DE LA MESA ===");
@@ -22,19 +22,21 @@ public class Juego {
             System.out.println("\nAntes de robar:");
             jugadorActual.mostrarMano();
             jugadorActual.deDondeRobar(mesa, maz);//preguntamos de donde sacamos del mazo o de la mesa
+            jugadorActual.hacerBackupmanoJugador();
             //jugadorActual.mostrarMano();
-
             //Camino A, el jugador aun no ha salido
             if (!jugadorActual.isHaSalido()) {  //Sihasalidocon10
                 System.out.println("\nNo has salido. Intenta hacer tus " + valRumy.getPUNTOS_MINIMOS_SALIDA() + " puntos");
-                //jugadorActual.mostrarMano();
+                jugadorActual.mostrarMano();
                 jugadorActual.sacarCartas(jugadaTemporal);
 
                 if (!jugadaTemporal.isEmpty()) {
                     if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
                         System.out.println("Jugada válida. Has salido");
-                        mesa.agregarJugada(jugadaTemporal);
+                        mesa.agregarJugada(new ArrayList<>(jugadaTemporal));
+                        //mesa.agregarJugada(jugadaTemporal);
                         jugadorActual.setHasalido(true);
+                        jugadorActual.eliminarCartasDelaMano(jugadaTemporal);
                         jugadorActual.mostrarMano();
 
                         if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
@@ -42,7 +44,7 @@ public class Juego {
                             System.out.println("¡Ganador: " + jugadorActual + "!");
                         }
                     } else {
-                        System.out.println("Jugada inválida o puntos insuficientes.");
+                        System.out.println("Jugada no valida o puntos insuficientes.");
                         jugadorActual.restaurarmano();
                         jugadorActual.mostrarMano();
                     }
@@ -56,19 +58,20 @@ public class Juego {
                     jugadorActual.sacarCartas(jugadaTemporal);
                     if (!jugadaTemporal.isEmpty()) {
                         if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
-                            System.out.println("Jugada Valida");
+                            System.out.println("Jugada valida ");
                             mesa.agregarJugada(jugadaTemporal);
+                            jugadorActual.setHasalido(true);
+                            jugadorActual.eliminarCartasDelaMano(jugadaTemporal);
                             jugadorActual.mostrarMano();
-
+                            jugadaTemporal.clear();
                             if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
                                 alguienHaGanado = true;
                                 System.out.println("Ganador" + jugadorActual + "!");
 
                             }
                         } else {
-                            System.out.println("Jugada Invalidad");
-                            jugadorActual.restaurarmano();
-                            jugadorActual.mostrarMano();
+                            System.out.println("Jugada no valida");
+                            jugadaTemporal.clear();
                         }
                     }
                 } else if (opcion == 2) {
@@ -79,6 +82,7 @@ public class Juego {
             //final de turno
             if (!alguienHaGanado){
                 mesa.tirarAlDescarte(jugadorActual.hacerDescarte());
+                jugadorActual.limpiarVaciosDeLaMano();
                 jugadaTemporal.clear();
                 turno = (turno + 1) % 4;
                 System.out.println("\n--- CAMBIO DE TURNO ---");
