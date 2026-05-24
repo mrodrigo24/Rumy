@@ -6,7 +6,7 @@ public class Jugador {
     private List<Carta> backupCartasPorJugador;
     Map<Integer, Carta> opciones = new HashMap<>();
     private boolean haSalido=false;
-    Scanner scan = new Scanner(System.in);
+    //Scanner scan = new Scanner(System.in);
     //int numero = -1;
     public Jugador (String numeroDeJugador){
          this.numeroDeJugador=numeroDeJugador;
@@ -131,7 +131,7 @@ public class Jugador {
         }
         System.out.println("Última carta en el descarte: " + mesa.getMazoDescarte().getLast());
         System.out.println("¿De dónde quieres robar? \n1 - Mazo Principal (Oculta) \n2 - Mazo de Descarte");
-        int numero = scan.nextInt();
+        int numero = LectorTeclado.leerEnteroEnRango(1,2);
         switch (numero){
             case 1:
                 recibirCartas(mazo.cogerCarta());
@@ -151,7 +151,7 @@ public class Jugador {
 
         while (cartaTirada == null) {
             System.out.println("¿Qué numero de carta quieres descartar?");
-            int numero = scan.nextInt();
+            int numero = LectorTeclado.leerEntero();
 
             cartaTirada = elegirCarta(numero);
 
@@ -164,7 +164,7 @@ public class Jugador {
 
     public Carta seleccionarCartaParaMesa(Mesa mesa, ValidadorRummy valRumy) {
         System.out.println("que carta quieres agregar a la mesa?");
-        int numeroJugada = scan.nextInt();
+        int numeroJugada = LectorTeclado.leerEntero();
         Carta cartaSeleccionada = elegirCarta(numeroJugada);
         if (cartaSeleccionada != null) {
             validarColocacionEnMesa(cartaSeleccionada, mesa, valRumy);
@@ -176,7 +176,7 @@ public class Jugador {
 
     private void validarColocacionEnMesa(Carta carta, Mesa mesa, ValidadorRummy valRumy) {
         System.out.println("¿numero de jugada de la mesa para anyadir?");
-        int numJugada = scan.nextInt();
+        int numJugada = LectorTeclado.leerEntero();
         int indiceMesa = numJugada - 1;
 
         if (indiceMesa >= 0 && indiceMesa < mesa.getJugadasEnMesa().size()) {

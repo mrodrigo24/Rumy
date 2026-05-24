@@ -1,12 +1,10 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.StringBuilder;
-
 public class Mesa {
     private List<Jugador> jugadores = new ArrayList<>();
     private List<List<Carta>> jugadasEnMesa;//lista de listas de jugadas en mesa
     private List<Carta> mazoDescarte;
-
     public Mesa() {
         this.jugadasEnMesa = new ArrayList<>();
         this.mazoDescarte = new ArrayList<>();
@@ -48,11 +46,13 @@ public class Mesa {
     }
 
         public void imprimirMesa (List < List < Carta >> jugadasEnMesa) {
-
+            int numeroDeJugada=1;
             for (List<Carta> jugada : jugadasEnMesa) {
+                System.out.print("Jugada "+numeroDeJugada + ":");
                 for (Carta carta : jugada) {
                     System.out.print(carta + " ");
                 }
+                numeroDeJugada++;
                 System.out.println();
             }
         }
