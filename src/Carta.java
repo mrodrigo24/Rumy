@@ -2,7 +2,6 @@ public class Carta implements Comparable <Carta>{
     private Simbolo simbolo;
     private Palos  palo;
 
-
     public Carta(Simbolo simbolo,Palos palo){
         this.simbolo=simbolo;
         this.palo=palo;

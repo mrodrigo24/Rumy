@@ -1,14 +1,13 @@
 import java.util.*;
 public class Jugador {
-    private String numeroDeJugador;
+    private int numeroDeJugador;
     private int puntos;
     private List<Carta> cartasPorJugador;//La mano de cada jugador
     private List<Carta> backupCartasPorJugador;
-    Map<Integer, Carta> opciones = new HashMap<>();
+   
     private boolean haSalido=false;
-    //Scanner scan = new Scanner(System.in);
-    //int numero = -1;
-    public Jugador (String numeroDeJugador){
+
+    public Jugador (int numeroDeJugador){
          this.numeroDeJugador=numeroDeJugador;
          this.puntos=0;
          this.cartasPorJugador=new ArrayList<Carta>();
@@ -22,20 +21,6 @@ public class Jugador {
 
     public void recibirCartas(Carta carta){
             cartasPorJugador.add(carta);
-    }
-
-    public void mostrarMano() {
-        Collections.sort(this.cartasPorJugador);
-        int numeroDeCartaDeljugador=0;
-        System.out.println("Mano de " + numeroDeJugador + ":");
-        Iterator<Carta> it = cartasPorJugador.iterator();
-        while (it.hasNext()) {
-            numeroDeCartaDeljugador++;
-            Carta c = it.next();
-            opciones.put(numeroDeCartaDeljugador,c);
-            System.out.println(numeroDeCartaDeljugador + "- " + c);
-        }
-        System.out.println();
     }
 
     public void mostrarDescarte(List<Carta> listadescarte) {
@@ -65,20 +50,7 @@ public class Jugador {
         this.haSalido=haSalido;
     }
 
-    /*public Carta elegirCarta(int numero){
-        Iterator<Carta> it = cartasPorJugador.iterator();
-        Carta cartaExtraida = null;
-        Carta objetivo=opciones.get(numero-1);
-        while(it.hasNext()){
-           Carta c=it.next();
-           if(c.equals(objetivo)){
-               cartaExtraida=c;
-               //it.remove();
-               break;
-           }
-                   }
-        return cartaExtraida;
-    }*/
+
     public Carta elegirCarta(int numero) {
         Carta cartaExtraida = cartasPorJugador.get(numero - 1);
         cartasPorJugador.set(numero - 1, null);
@@ -162,29 +134,27 @@ public class Jugador {
         return cartaTirada;
     }
 
-    public Carta seleccionarCartaParaMesa(Mesa mesa, ValidadorRummy valRumy) {
+    public Carta seleccionarCartaParaMesa(Mesa mesa) {
         System.out.println("que carta quieres agregar a la mesa?");
         int numeroJugada = LectorTeclado.leerEntero();
         Carta cartaSeleccionada = elegirCarta(numeroJugada);
         if (cartaSeleccionada != null) {
-            validarColocacionEnMesa(cartaSeleccionada, mesa, valRumy);
+            validarColocacionEnMesa(cartaSeleccionada, mesa);
         } else {
             System.out.println("El numero da error");
         }
         return cartaSeleccionada;
     }
 
-    private void validarColocacionEnMesa(Carta carta, Mesa mesa, ValidadorRummy valRumy) {
+    private void validarColocacionEnMesa(Carta carta, Mesa mesa) {
         System.out.println("¿numero de jugada de la mesa para anyadir?");
         int numJugada = LectorTeclado.leerEntero();
         int indiceMesa = numJugada - 1;
 
         if (indiceMesa >= 0 && indiceMesa < mesa.getJugadasEnMesa().size()) {
-            List<Carta> jugadaObjetivo = mesa.getJugadasEnMesa().get(indiceMesa);
-            // Validamos si la carta encaja
-            if (valRumy.comprobarAmpliacion(jugadaObjetivo, carta)) {
+            // Intentamos añadir la carta a la mesa. El propio método valida internamente
+            if (mesa.anyadirCartaAJugada(indiceMesa, carta)) {
                 System.out.println("ok Carta anyadida a la jugada " + numJugada + ".");
-                mesa.anyadirCartaAJugada(indiceMesa, carta);
             } else {
                 System.out.println("Movimiento no valido. carta regresa a mano.");
                 volverLaCartaAlMazodeJugador(carta);
@@ -209,12 +179,16 @@ public class Jugador {
     public boolean isHaSalido(){
         return this.haSalido;
     }
-
     public List<Carta> getCartasPorJugador() {
         return cartasPorJugador;
     }
-
     public void volverLaCartaAlMazodeJugador(Carta crt) {
         this.cartasPorJugador.add(crt);
     }
+
+    public String toString() {
+        return "Jugador " + numeroDeJugador ;
+    }
+
+
 }

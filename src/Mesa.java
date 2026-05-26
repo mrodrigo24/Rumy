@@ -3,14 +3,14 @@ import java.util.ArrayList;
 import java.lang.StringBuilder;
 public class Mesa {
     private List<Jugador> jugadores = new ArrayList<>();
-    private List<List<Carta>> jugadasEnMesa;//lista de listas de jugadas en mesa
+    private List<Jugada> jugadasEnMesa;//lista de listas de jugadas en mesa
     private List<Carta> mazoDescarte;
     public Mesa() {
-        this.jugadasEnMesa = new ArrayList<>();
+        this.jugadasEnMesa = new ArrayList<Jugada>();
         this.mazoDescarte = new ArrayList<>();
     }
 
-    public List<List<Carta>> getJugadasEnMesa() {
+    public List<Jugada> getJugadasEnMesa() {
         return jugadasEnMesa;
     }
 
@@ -19,16 +19,15 @@ public class Mesa {
     }
     public List<Jugador> prepararJugadores(Mazo mazo) {
         for (int i = 0; i < 4; i++) {
-            Jugador nuevoJugador = new Jugador("Jugador" + i);
+            Jugador nuevoJugador = new Jugador(i);
             nuevoJugador.repartir(mazo);
             this.jugadores.add(nuevoJugador);
         }
         return this.jugadores;
     }
 
-    public void agregarJugada(List<Carta> jugadaTemporal) {
-        List<Carta> copiaJugada = new ArrayList<>(jugadaTemporal);
-        this.jugadasEnMesa.add(copiaJugada);
+    public void agregarJugada(Jugada nuevaJugada) {
+        this.jugadasEnMesa.add(nuevaJugada);
     }
 
     public Carta robarDelMazo() {
@@ -41,42 +40,28 @@ public class Mesa {
         mazoDescarte.add(crt);
     }
 
-    public void anyadirCartaAJugada(int indiceJugada, Carta carta) {
-          jugadasEnMesa.get(indiceJugada).add(carta);
+    public boolean anyadirCartaAJugada(int indiceJugada, Carta carta) {
+        Jugada jugadaObj = jugadasEnMesa.get(indiceJugada);
+        return jugadaObj.anyadirCarta(carta);
     }
 
-        public void imprimirMesa (List < List < Carta >> jugadasEnMesa) {
-            int numeroDeJugada=1;
-            for (List<Carta> jugada : jugadasEnMesa) {
-                System.out.print("Jugada "+numeroDeJugada + ":");
-                for (Carta carta : jugada) {
-                    System.out.print(carta + " ");
-                }
-                numeroDeJugada++;
-                System.out.println();
-            }
-        }
-
+    @Override
     public String toString() {
-
         StringBuilder sb = new StringBuilder();
         sb.append("=== JUGADAS EN LA MESA ===\n");
 
         int numeroJugada = 1;
-        // cada grupo o escalera
-        for (List<Carta> jugada : jugadasEnMesa) {
+        // Ahora recorremos objetos de tipo Jugada
+        for (Jugada jugada : jugadasEnMesa) {
             sb.append("Jugada ").append(numeroJugada).append(": ");
 
-            // recorremos esa jugada
-            for (Carta carta : jugada) {
-                sb.append(carta.toString()).append(" ");
-            }
+            // Java llamará automáticamente al toString() que pusimos en la clase Jugada
+            sb.append(jugada.toString()).append("\n");
 
-            sb.append("\n");
             numeroJugada++;
         }
         sb.append("==========================");
-        return sb.toString(); // texto
+        return sb.toString();
     }
 
 
