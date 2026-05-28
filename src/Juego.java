@@ -8,7 +8,7 @@ public class Juego {
         private List<Carta> jugadaTemporal;
         private ValidadorRummy valRumy;
         private Visualizador visual;
-
+        private ControladorTurno controladorTurno;
        public Juego(){
            this.alguienHaGanado = false;
            this.turno = 0;
@@ -18,12 +18,13 @@ public class Juego {
            this.jugadaTemporal = new ArrayList<>();
            this.valRumy = new ValidadorRummy();
            this.visual=new Visualizador();
+           this.controladorTurno = new ControladorTurno(this.visual);
        }
-
 
         public void jugar() {
 
             while (!alguienHaGanado) {
+
                 Jugador jugadorActual = jugadores.get(turno);//primero cogemos turno
                 // --- mostramos mesa y  mano ---
 
@@ -32,29 +33,22 @@ public class Juego {
                 visual.mostrarMano(jugadorActual);
 
                 //Fase de Robo
-                jugadorActual.deDondeRobar(mesa, maz);//preguntamos de donde sacamos del mazo o de la mesa
+                controladorTurno.deDondeRobar(jugadorActual, maz, mesa.getMazoDescarte());//preguntamos de donde sacamos del mazo o de la mesa
                 jugadorActual.hacerBackupmanoJugador();
 
                 //Camino A, el jugador aun no ha salido
                 if (!jugadorActual.isHaSalido()) {  //Sihasalidocon10
                     System.out.println("\nNo has salido. Intenta hacer tus " + valRumy.getPUNTOS_MINIMOS_SALIDA() + " puntos");
-                    visual.mostarNumeroDescarte(jugadorActual);
-                    jugadorActual.sacarCartas(jugadaTemporal);
+                    //visual.mostarNumeroDescarte(jugadorActual);
+                    jugadorActual.sacarCartas(jugadaTemporal, visual);
                     if (!jugadaTemporal.isEmpty()) {
                         if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
                             System.out.println("Jugada válida. Has salido");
-
-                            // Polimorfismo: Intentamos empaquetar como Grupo, si no es válido, es una Escalera
-                            Jugada nuevaJugada = new Grupo(new ArrayList<>(jugadaTemporal));
-                            if (!nuevaJugada.validarJugada()) {
-                                nuevaJugada = new Escalera(new ArrayList<>(jugadaTemporal));
-                            }
-
-                            // Ahora sí, agregamos el objeto Jugada polimórfico a la mesa
+                            Jugada nuevaJugada = JugadaGoes.crearJugada(jugadaTemporal);
                             mesa.agregarJugada(nuevaJugada);
-
                             jugadorActual.setHasalido(true); //
                             jugadorActual.eliminarCartasDelaMano(jugadaTemporal); //
+                            jugadorActual.limpiarVaciosDeLaMano();
                             visual.mostarNumeroDescarte(jugadorActual); //
 
                             if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) { //
@@ -68,49 +62,62 @@ public class Juego {
                         }
                     }
                 } else {
-                    System.out.println("\n¿Qué deseas hacer? \n1 - crear una nueva jugada \n2 - anyadir una carta a la mesa"); //
-                    int opcion = LectorTeclado.leerEnteroEnRango(1, 2); //
+                    boolean terminarTurnoActual = false;
+                    while (!terminarTurnoActual) {
+                    System.out.println("\n¿Qué deseas hacer? \n1 - crear una nueva jugada \n2 - anyadir una carta a la mesa\n3 - terminar turno y descartar"); //
+                    int opcion = LectorTeclado.leerEnteroEnRango(1, 3); //
 
                     if (opcion == 1) {
-                        jugadorActual.sacarCartas(jugadaTemporal); //
-                        if (!jugadaTemporal.isEmpty()) { //
-                            if (valRumy.comprobar(jugadaTemporal, jugadorActual)) { //
-                                System.out.println("Jugada valida "); //
-
-                                // Polimorfismo: Identificamos si es Grupo o Escalera e instanciamos la Jugada real
-                                Jugada nuevaJugada = new Grupo(new ArrayList<>(jugadaTemporal));
-                                if (!nuevaJugada.validarJugada()) {
-                                    nuevaJugada = new Escalera(new ArrayList<>(jugadaTemporal));
-                                }
-
+                        jugadorActual.sacarCartas(jugadaTemporal,visual);
+                        if (!jugadaTemporal.isEmpty()) {
+                            if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
+                                System.out.println("Jugada valida ");
+                                Jugada jugadaPropuesta = JugadaGoes.crearJugada(jugadaTemporal);
                                 // Ahora sí, agregamos el objeto Jugada a la mesa
-                                mesa.agregarJugada(nuevaJugada);
+                                mesa.agregarJugada(jugadaPropuesta);
 
-                                jugadorActual.setHasalido(true); //
-                                jugadorActual.eliminarCartasDelaMano(jugadaTemporal); //
-                                visual.mostarNumeroDescarte(jugadorActual); //
+                                //jugadorActual.setHasalido(true);
+                                jugadorActual.eliminarCartasDelaMano(jugadaTemporal);
+                                jugadorActual.limpiarVaciosDeLaMano();
+                                visual.mostarNumeroDescarte(jugadorActual);
 
-                                jugadaTemporal.clear(); //
+                                jugadaTemporal.clear();
                                 if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) { //
-                                    alguienHaGanado = true; //
-                                    System.out.println("Ganador " + jugadorActual + "!"); //
+                                    alguienHaGanado = true;
+                                    terminarTurnoActual = true;
+                                    System.out.println("Ganador " + jugadorActual + "!");
                                 }
                             } else {
-                                System.out.println("Jugada no valida"); //
-                                jugadorActual.restaurarmano(); //
-                                jugadaTemporal.clear(); //
+                                System.out.println("Jugada no valida");
+                                jugadorActual.restaurarmano();
+                                jugadaTemporal.clear();
                             }
+                        } else{
+                            System.out.println("Has cancelado la creación de la jugada. Volviendo al menú.");
                         }
+
                     } else if (opcion == 2) {
                         // Quitamos valRumy de los parámetros porque Mesa y Jugada ya se validan solas de forma polimórfica
-                        jugadorActual.seleccionarCartaParaMesa(mesa);
+                        controladorTurno.seleccionarCartaParaMesa(jugadorActual,mesa);
+                        if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
+                            alguienHaGanado = true;
+                            terminarTurnoActual = true;
+                            System.out.println("Ganador " + jugadorActual + "!");
+                        }
                     }
-                }
+                else if (opcion == 3) {
+                        // 3. El jugador decide voluntariamente finalizar sus acciones
+                        System.out.println("Finalizando fase de jugadas. Procediendo al descarte obligatorio.");
+                        terminarTurnoActual = true;
+                    }
+            }
+        }
 
                 //final de turno
                 if (!alguienHaGanado) {
-                    mesa.tirarAlDescarte(jugadorActual.hacerDescarte());
                     jugadorActual.limpiarVaciosDeLaMano();
+                    mesa.tirarAlDescarte(controladorTurno.hacerDescarte(jugadorActual));
+
                     jugadaTemporal.clear();
                     turno = (turno + 1) % 4;
                     System.out.println("\n--- CAMBIO DE TURNO ---");
