@@ -8,6 +8,10 @@ public abstract class Jugada {
         this.listaRecibida = cartasIniciales;
     }
 
+    public List<Carta> getListaRecibida() {
+        return listaRecibida;
+    }
+
     public abstract boolean validarJugada();
     public abstract boolean anyadirCarta(Carta crt);
     public abstract int calcularPuntos();

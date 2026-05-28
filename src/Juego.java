@@ -64,8 +64,8 @@ public class Juego {
                 } else {
                     boolean terminarTurnoActual = false;
                     while (!terminarTurnoActual) {
-                    System.out.println("\n¿Qué deseas hacer? \n1 - crear una nueva jugada \n2 - anyadir una carta a la mesa\n3 - terminar turno y descartar"); //
-                    int opcion = LectorTeclado.leerEnteroEnRango(1, 3); //
+                    System.out.println("\n¿Qué deseas hacer? \n1 - crear una nueva jugada \n2 - anyadir una carta a la mesa\n3 - robar carta de la mesa\n4 - terminar turno y descartar"); //
+                    int opcion = LectorTeclado.leerEnteroEnRango(1, 4); //
 
                     if (opcion == 1) {
                         jugadorActual.sacarCartas(jugadaTemporal,visual);
@@ -104,12 +104,16 @@ public class Juego {
                             terminarTurnoActual = true;
                             System.out.println("Ganador " + jugadorActual + "!");
                         }
+                    } else if (opcion==3){
+
                     }
-                else if (opcion == 3) {
+                else if (opcion == 4) {
                         // 3. El jugador decide voluntariamente finalizar sus acciones
                         System.out.println("Finalizando fase de jugadas. Procediendo al descarte obligatorio.");
                         terminarTurnoActual = true;
                     }
+
+
             }
         }
 
