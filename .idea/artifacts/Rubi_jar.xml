@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Rubi:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Rubi_jar</output-path>
+    <root id="archive" name="Rubi.jar">
+      <element id="module-output" name="Rubi" />
+    </root>
+  </artifact>
+</component>

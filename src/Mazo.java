@@ -38,9 +38,9 @@ public class Mazo {
         return cartas.removeFirst();
     }
 
-    public boolean estaVacio() {
+    /*public boolean estaVacio() {
         return cartas.isEmpty();
-    }
+    }*/
 
 
     @Override

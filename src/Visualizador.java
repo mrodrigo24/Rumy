@@ -2,15 +2,13 @@ import java.util.*;
 
 public class Visualizador {
     Map<Integer, Carta> opciones = new HashMap<>();
-    Mesa mesa=new Mesa();
-    public void imprimeInicio(){
+
+    public void imprimeInicio(Mesa mesa){
         System.out.println("\n=== ESTADO DE LA MESA ===");
         System.out.println(mesa.toString());
         System.out.println("==========================");
         System.out.println("\nAntes de robar:");
-
     }
-
 
     public void mostrarMano(Jugador jugador) {
         List<Carta> cartas = jugador.getCartasPorJugador();
@@ -22,15 +20,24 @@ public class Visualizador {
     
     public void mostarNumeroDescarte(Jugador jugador){
         int numeroDeCartaDeljugador=0;
-        Collections.sort(jugador.getCartasPorJugador());
-        mostrarMano(jugador);
-        Iterator<Carta> it = jugador.getCartasPorJugador().iterator();
-        while (it.hasNext()) {
-            numeroDeCartaDeljugador++;
-            Carta c = it.next();
-            opciones.put(numeroDeCartaDeljugador,c);
-            System.out.println(numeroDeCartaDeljugador + "- " + c);
+        List<Carta> copiaOrdenada = new ArrayList<>(jugador.getCartasPorJugador());
+        List<Carta> sacoDeNulls = new ArrayList<>();
+        sacoDeNulls.add(null);
+        copiaOrdenada.removeAll(sacoDeNulls);
+        Collections.sort(copiaOrdenada);
+        System.out.println("\n=== TU MANO (ORDENADA) ===");
+        //mostrarMano(jugador);
+        for (Carta c : copiaOrdenada) {
+
+            int numeroParaPulsar = jugador.getCartasPorJugador().indexOf(c) + 1; //
+
+            // Guardamos en tu mapa de opciones
+            opciones.put(numeroParaPulsar, c);
+
+            // Imprimimos
+            System.out.println(numeroParaPulsar + " - " + c); //
         }
+
         System.out.println();
     }
 

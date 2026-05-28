@@ -4,7 +4,6 @@ public class Jugador {
     private int puntos;
     private List<Carta> cartasPorJugador;//La mano de cada jugador
     private List<Carta> backupCartasPorJugador;
-   
     private boolean haSalido=false;
 
     public Jugador (int numeroDeJugador){
@@ -59,9 +58,12 @@ public class Jugador {
     }
 
 
-    public List  sacarCartas(List <Carta> listaMazo) {
+    public List  sacarCartas(List <Carta> listaMazo,Visualizador visual) {
         int numero = -1;
+        visual.mostarNumeroDescarte(this);
         while (numero != 0) {
+            System.out.println("\n-------------------------------------------");
+
             System.out.println("Introduce el numero, cero para salir");
              numero=LectorTeclado.leerEnteroEnRango(0,cartasPorJugador.size());
             if (numero == 0) {
@@ -71,6 +73,7 @@ public class Jugador {
             if (seleccionada != null) {
                 listaMazo.add(seleccionada);
                 System.out.println("Has añadido: " + seleccionada);
+                //visual.mostarNumeroDescarte(this);
             } else {
                System.out.println("¡Error! El número " + numero + " no corresponde a ninguna carta.");
             }
@@ -94,56 +97,6 @@ public class Jugador {
             return false;
         }
         return true;
-    }
-    public void deDondeRobar(Mesa mesa, Mazo mazo){
-        if (mesa.getMazoDescarte().isEmpty()) {
-            System.out.println("El mazo de descarte vacío. Robas del mazo principal.");
-            recibirCartas(mazo.cogerCarta());
-            return;
-        }
-        System.out.println("Última carta en el descarte: " + mesa.getMazoDescarte().getLast());
-        System.out.println("¿De dónde quieres robar? \n1 - Mazo Principal (Oculta) \n2 - Mazo de Descarte");
-        int numero = LectorTeclado.leerEnteroEnRango(1,2);
-        switch (numero){
-            case 1:
-                recibirCartas(mazo.cogerCarta());
-                break;
-            case 2:
-                recogerDescarte(mesa.getMazoDescarte());
-                break;
-            default:
-                System.out.println("Robas del mazo principal.");
-                recibirCartas(mazo.cogerCarta());
-                break;
-        }
-    }
-
-    public Carta hacerDescarte() {
-        Carta cartaTirada = null;
-
-        while (cartaTirada == null) {
-            System.out.println("¿Qué numero de carta quieres descartar?");
-            int numero = LectorTeclado.leerEntero();
-
-            cartaTirada = elegirCarta(numero);
-
-            if (cartaTirada == null) {
-                System.out.println("¡Error! Ese numero no corresponde a ninguna carta de tu mano. nuevamente.");
-            }
-        }
-        return cartaTirada;
-    }
-
-    public Carta seleccionarCartaParaMesa(Mesa mesa) {
-        System.out.println("que carta quieres agregar a la mesa?");
-        int numeroJugada = LectorTeclado.leerEntero();
-        Carta cartaSeleccionada = elegirCarta(numeroJugada);
-        if (cartaSeleccionada != null) {
-            validarColocacionEnMesa(cartaSeleccionada, mesa);
-        } else {
-            System.out.println("El numero da error");
-        }
-        return cartaSeleccionada;
     }
 
     private void validarColocacionEnMesa(Carta carta, Mesa mesa) {
