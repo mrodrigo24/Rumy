@@ -86,7 +86,7 @@ public class Escalera extends Jugada {
     @Override
     public int calcularPuntos() {
         int sumaTotal = 0;
-        // Ordenamos las cartas primero para que coincidan con la lógica de la escalera
+        // Ordenamos las cartas primero para que coincidan con la logica de la escalera
         Collections.sort(listaRecibida);
 
         int contadorComodines = 0;
