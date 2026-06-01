@@ -61,7 +61,7 @@ public class Escalera extends Jugada {
 
         }
         if (numerosEnteros.isEmpty()) {
-            return false;
+            return  false;
         }
         if (numerosEnteros.get(0) - contadorDeComodines < 1) {
             return false;
