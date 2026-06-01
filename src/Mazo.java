@@ -12,13 +12,11 @@ public class Mazo {
     }
 
     public void inicializarMazo(){
-        //Valores[] arrayValores = Valores.values();
-       for(Simbolo v:Simbolo.values()){
+
+       for(Simbolo v : Simbolo.values()){
            if (v == Simbolo.COMODIN) continue;
            for (Palos p :Palos.values()) {
                if (p == Palos.COMODIN) continue;
-
-               //Valores h = arrayValores[v.ordinal()];
                cartas.add(new Carta(v, p));
            }
        }
@@ -32,16 +30,11 @@ public class Mazo {
 
     public Carta cogerCarta(){
         if (cartas.isEmpty()){
-            System.out.println("¡Aviso: El mazo está vacío!");
+            System.out.println("¡Mazo vacio!");
             return null;
         }
         return cartas.removeFirst();
     }
-
-    /*public boolean estaVacio() {
-        return cartas.isEmpty();
-    }*/
-
 
     @Override
     public String toString() {

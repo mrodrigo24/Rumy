@@ -49,27 +49,41 @@ public class Jugador {
         this.haSalido=haSalido;
     }
 
+    //polimorfismo
+    public Carta elegirCarta(int numero, Visualizador visual) {
+        // Buscamos la carta
+        Carta cartaSeleccionada = visual.getOpciones().get(numero);
 
-    public Carta elegirCarta(int numero) {
-        Carta cartaExtraida = cartasPorJugador.get(numero - 1);
-        cartasPorJugador.set(numero - 1, null);
-        return cartaExtraida;
+        // Controlamos que cartatiene alfo
+        if (cartaSeleccionada == null) {
+            return null;
+        }
 
+        // borramos la carta
+        this.cartasPorJugador.remove(cartaSeleccionada);
+
+        // la ponemos en la jugada
+        return cartaSeleccionada;
     }
+    public Carta elegirCarta(int indice) {
 
+        if (indice >= 0 && indice < cartasPorJugador.size()) {
+            return cartasPorJugador.remove(indice);
+        }
+        return null;
+    }
 
     public List  sacarCartas(List <Carta> listaMazo,Visualizador visual) {
         int numero = -1;
         visual.mostarNumeroDescarte(this);
         while (numero != 0) {
             System.out.println("\n-------------------------------------------");
-
             System.out.println("Introduce el numero, cero para salir");
              numero=LectorTeclado.leerEnteroEnRango(0,cartasPorJugador.size());
             if (numero == 0) {
                 break;
             }
-            Carta seleccionada = elegirCarta(numero);
+            Carta seleccionada = elegirCarta(numero, visual);
             if (seleccionada != null) {
                 listaMazo.add(seleccionada);
                 System.out.println("Has añadido: " + seleccionada);
@@ -99,34 +113,10 @@ public class Jugador {
         return true;
     }
 
-    private void validarColocacionEnMesa(Carta carta, Mesa mesa) {
-        System.out.println("¿numero de jugada de la mesa para anyadir?");
-        int numJugada = LectorTeclado.leerEntero();
-        int indiceMesa = numJugada - 1;
-
-        if (indiceMesa >= 0 && indiceMesa < mesa.getJugadasEnMesa().size()) {
-            // Intentamos añadir la carta a la mesa. El propio método valida internamente
-            if (mesa.anyadirCartaAJugada(indiceMesa, carta)) {
-                System.out.println("ok Carta anyadida a la jugada " + numJugada + ".");
-            } else {
-                System.out.println("Movimiento no valido. carta regresa a mano.");
-                volverLaCartaAlMazodeJugador(carta);
-            }
-        } else {
-            System.out.println("carta no existe en mesa, regresa a mano.");
-            volverLaCartaAlMazodeJugador(carta);
-        }
-    }
     public void eliminarCartasDelaMano(List<Carta> ListaTemporal) {
-        List<Carta> sacoDeNulls = new ArrayList<>();
+
         cartasPorJugador.removeAll(ListaTemporal);
-        sacoDeNulls.add(null);
-        cartasPorJugador.removeAll(sacoDeNulls);
-    }
-    public void limpiarVaciosDeLaMano() {
-        List<Carta> sacoDeNulls = new ArrayList<>();
-        sacoDeNulls.add(null);
-        this.cartasPorJugador.removeAll(sacoDeNulls);
+
     }
 
     public boolean isHaSalido(){
@@ -138,7 +128,6 @@ public class Jugador {
     public void volverLaCartaAlMazodeJugador(Carta crt) {
         this.cartasPorJugador.add(crt);
     }
-
     public String toString() {
         return "Jugador " + numeroDeJugador ;
     }

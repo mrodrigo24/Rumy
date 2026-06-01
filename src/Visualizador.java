@@ -3,6 +3,9 @@ import java.util.*;
 public class Visualizador {
     Map<Integer, Carta> opciones = new HashMap<>();
 
+    public Map<Integer, Carta> getOpciones() {
+        return this.opciones;
+    }
     public void imprimeInicio(Mesa mesa){
         System.out.println("\n=== ESTADO DE LA MESA ===");
         System.out.println(mesa.toString());
@@ -12,45 +15,38 @@ public class Visualizador {
 
     public void mostrarMano(Jugador jugador) {
         List<Carta> cartas = jugador.getCartasPorJugador();
-        System.out.println("\nMano de " + jugador.toString() + ":");
+        System.out.println("\nMano de " + jugador + ":");
         for (int i = 0; i < cartas.size(); i++) {
             System.out.println((i + 1) + " - " + cartas.get(i));        }
         System.out.println();
     }
-    
+
     public void mostarNumeroDescarte(Jugador jugador){
-        int numeroDeCartaDeljugador=0;
+        // 1. Creamos la copia limpia y la ordenamos
         List<Carta> copiaOrdenada = new ArrayList<>(jugador.getCartasPorJugador());
-        List<Carta> sacoDeNulls = new ArrayList<>();
-        sacoDeNulls.add(null);
-        copiaOrdenada.removeAll(sacoDeNulls);
         Collections.sort(copiaOrdenada);
+
+        // Limpiamos el mapa de opciones anterior para que no acumule basura de turnos pasados
+        //opciones.clear();
         System.out.println("\n=== TU MANO (ORDENADA) ===");
-        //mostrarMano(jugador);
-        for (Carta c : copiaOrdenada) {
 
-            int numeroParaPulsar = jugador.getCartasPorJugador().indexOf(c) + 1; //
+        // 2. Usamos un bucle clasico con indice para que los números vayan seguidos: 1, 2, 3...
+        for (int i = 0; i < copiaOrdenada.size(); i++) {
+            Carta c = copiaOrdenada.get(i);
 
-            // Guardamos en tu mapa de opciones
+            // El número para pulsar será la posición en la copia ordenada + 1 (para que empiece en 1)
+            int numeroParaPulsar = i + 1;
+
+            // Guardamos en tu mapa de opciones (vinculará el número 1, 2, 3... con su carta)
             opciones.put(numeroParaPulsar, c);
 
-            // Imprimimos
-            System.out.println(numeroParaPulsar + " - " + c); //
+            // Imprimimos de manera limpia y consecutiva
+            System.out.println(numeroParaPulsar + " - " + c);
         }
-
         System.out.println();
     }
-
-    public void imprimirMesa (List < List < Carta >> jugadasEnMesa) {
-        int numeroDeJugada=1;
-        for (List<Carta> jugada : jugadasEnMesa) {
-            System.out.print("Jugada "+numeroDeJugada + ":");
-            for (Carta carta : jugada) {
-                System.out.print(carta + " ");
-            }
-            numeroDeJugada++;
-            System.out.println();
-        }
+    public void imprimirMesa(JugadasEnMesa jugadasEnMesa) {
+        System.out.println(jugadasEnMesa);
     }
 
 }

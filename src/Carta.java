@@ -11,17 +11,11 @@ public class Carta implements Comparable <Carta>{
         return palo;
     }
 
-    public void setPalo(Palos palo) {
-        this.palo = palo;
-    }
 
     public Simbolo getSimbolo() {
         return simbolo;
     }
 
-    public void setSimbolo(Simbolo simbolo) {
-        this.simbolo = simbolo;
-    }
 
     @Override
     public int compareTo(Carta crt) {

@@ -1,76 +1,62 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class GestorIntercambios {
 
-    public Carta averiguarCartaComodin(List<Jugada> jugadasEnMesa, int numero) {
+    /**
+     * Gestiona el proceso interactivo de intercambio cuando el jugador pulsa la opción 3.
+     * * @param jugador El jugador que está jugando su turno actual.
+     * @param mesa    El objeto general de la mesa de juego.
+     */
+    public void solicitarYProcesarIntercambio(Jugador jugador, Mesa mesa) {
+        // 1. Conseguimos el acceso al nuevo contenedor inteligente de jugadas
+        JugadasEnMesa jugadas = mesa.getJugadasEnMesa();
 
-        Jugada jugadaSeleccionada = jugadasEnMesa.get(numero);
-
-        System.out.println("--- PRUEBA DE JUGADA SELECCIONADA ---");
-        System.out.println(jugadaSeleccionada.toString());
-        System.out.println("-------------------------------------\n");
-
-        // 2. Extraemos las cartas que hay dentro de la jugada
-        // (Asegúrate de que tu clase Jugada tenga el método getListaRecibida() o similar)
-        List<Carta> cartasDeLaJugada = jugadaSeleccionada.getListaRecibida();
-
-        // 3. Simulamos la carta que tú tienes en la mano y quieres poner
-        // Vamos a decir que tienes el SIETE de CORAZONES en tu mano
-        Carta cartaQueYoOfrezco = new Carta(Simbolo.SIETE, Palos.CORAZONES);
-        System.out.println("Tú ofreces desde tu mano: " + cartaQueYoOfrezco);
-
-        // 4. Buscamos en qué posición (índice) está el comodín en la mesa
-        int posicionComodin = -1;
-        for (int i = 0; i < cartasDeLaJugada.size(); i++) {
-            if (cartasDeLaJugada.get(i).getSimbolo() == Simbolo.COMODIN) {
-                posicionComodin = i;
-                break;
-            }
+        // Si no hay jugadas en la mesa, cancelamos inmediatamente
+        if (jugadas.size() == 0) {
+            System.out.println("No hay ninguna jugada en la mesa con la que puedas intercambiar.");
+            return;
         }
 
-        // 5. Si encontramos un comodín, hacemos la magia matemática
-        if (posicionComodin != -1) {
-            System.out.println("-> Comodín detectado en la posición índice: " + posicionComodin);
+        // 2. Preguntamos por la carta de la mano del jugador
+        System.out.println("¿Qué número de carta de tu mano quieres ofrecer para el intercambio?");
+        int numeroMano = LectorTeclado.leerEnteroEnRango(1, jugador.getCartasPorJugador().size());
 
-            // Miramos la carta que está justo antes del comodín (en este caso, el 6 de corazones)
-            Carta cartaVecina = cartasDeLaJugada.get(posicionComodin - 1);
+        // Extraemos temporalmente la carta de su mano (pone un null en su lugar)
+        Carta cartaOfrecida = jugador.elegirCarta(numeroMano);
+        if (cartaOfrecida == null) {
+            System.out.println("Error: Esa carta ya no está disponible.");
+            return;
+        }
 
-            // Averiguamos qué valor interno en la escalera tiene la vecina y le sumamos 1
-            int valorMatematicoEsperado = cartaVecina.getSimbolo().getOrdenEscalera() + 1;
+        // 3. Preguntamos por la jugada de la mesa
+        System.out.println("¿A qué número de jugada de la mesa quieres dirigir el intercambio?");
+        int numeroJugadaMesa = LectorTeclado.leerEnteroEnRango(1, jugadas.size());
+        int indiceJugada = numeroJugadaMesa - 1; // Ajustamos al índice base 0 de las listas
 
-            // 6. Comprobamos si tu carta coincide en número y en palo
-            if (cartaQueYoOfrezco.getSimbolo().getOrdenEscalera() == valorMatematicoEsperado
-                    && cartaQueYoOfrezco.getPalo() == cartaVecina.getPalo()) {
+        // 4. Preguntamos qué carta de esa jugada se quiere llevar
+        Jugada jugadaSeleccionada = jugadas.get(indiceJugada);
+        System.out.println("Cartas disponibles en la Jugada " + numeroJugadaMesa + ":");
+        List<Carta> cartasEnJugada = jugadaSeleccionada.getListaRecibida();
+        for (int i = 0; i < cartasEnJugada.size(); i++) {
+            System.out.println((i + 1) + " - " + cartasEnJugada.get(i));
+        }
 
-                System.out.println("¡SÍ SE PUEDE! Tu carta sustituye perfectamente al comodín. La escalera seguiría igual de válida.");
-                // Aquí devolveríamos el Comodín rescatado para guardarlo en tu mano
-                return cartasDeLaJugada.get(posicionComodin);
-            } else {
-                System.out.println("¡NO SE PUEDE! Esa carta no es la que el comodín está sustituyendo.");
-            }
+        System.out.println("¿Qué número de carta de la mesa te quieres llevar a tu mano?");
+        int numeroCartaMesa = LectorTeclado.leerEnteroEnRango(1, cartasEnJugada.size());
+        int indiceCartaMesa = numeroCartaMesa - 1;
+
+        // 5. LLAMADA AL TABLERO: Procesamos el intercambio real con las 3 Reglas de Oro
+        Carta cartaRescatada = jugadas.intercambiarCarta(indiceJugada, cartaOfrecida, indiceCartaMesa);
+
+        if (cartaRescatada != null) {
+            // ÉXITO: El intercambio fue legal. Guardamos la carta de la mesa en la mano del jugador
+            jugador.volverLaCartaAlMazodeJugador(cartaRescatada);
+            System.out.println("¡Perfecto! Has recibido " + cartaRescatada + " en tu mano.");
         } else {
-            System.out.println("No hay ningún comodín en esta jugada.");
+            // FRACASO: El movimiento rompió las reglas. Devolvemos la carta ofrecida a la mano del jugador
+            jugador.volverLaCartaAlMazodeJugador(cartaOfrecida);
+            System.out.println("El trato se ha cancelado. Tu carta regresa a tu mano.");
         }
-        return null;
-    }
 
-    // MÉTODO DE PRUEBA CONTROLADO
-    public static void main(String[] args) {
-        List<Jugada> mesaSimulada = new ArrayList<>();
-        List<Carta> cartasIniciales = new ArrayList<>();
-
-        // Fabricamos una escalera: 5 de Corazones, 6 de Corazones y un Comodín (que hace de 7)
-        cartasIniciales.add(new Carta(Simbolo.CINCO, Palos.CORAZONES));
-        cartasIniciales.add(new Carta(Simbolo.SEIS, Palos.CORAZONES));
-        cartasIniciales.add(new Carta(Simbolo.COMODIN, Palos.COMODIN)); // El comodín en tercera posición
-
-        Jugada jugadaPrueba = new Escalera(cartasIniciales);
-        mesaSimulada.add(jugadaPrueba);
-
-        GestorIntercambios gestor = new GestorIntercambios();
-
-        // Probamos a analizar la jugada de la posición 0
-        gestor.averiguarCartaComodin(mesaSimulada, 0);
-    }
+        }
 }
