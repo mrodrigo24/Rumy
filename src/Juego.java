@@ -1,5 +1,4 @@
 import java.util.*;
-
 public class Juego {
     private boolean alguienHaGanado;
     private int turno;
@@ -11,22 +10,27 @@ public class Juego {
     private Visualizador visual;
     private ControladorTurno controladorTurno;
     private GestorIntercambios gestorIntercambios;
+    private ReglasJuego reglas;
 
-    public Juego() {
+    public Juego(ReglasJuego reglasElegidas) {
         this.alguienHaGanado = false;
         this.turno = 0;
-        this.maz = new Mazo(2);
-        this.mesa = new Mesa();
-        this.jugadores = mesa.prepararJugadores(maz);
+
+        this.jugadores = mesa.prepararJugadores(maz,this.reglas);
         this.jugadaTemporal = new ArrayList<>();
         this.valRumy = new ValidadorRummy();
         this.visual = new Visualizador();
         this.controladorTurno = new ControladorTurno(this.visual);
         this.gestorIntercambios = new GestorIntercambios();
+        this.reglas=reglasElegidas;
     }
 
 
     public void jugar() {
+        this.reglas = LectorTeclado.pedirVarianteJuego();
+        this.maz = new Mazo(2);
+        this.mesa = new Mesa();
+        mesa.prepararJugadores(maz, this.reglas);
         while (!alguienHaGanado) {
             Jugador jugadorActual = jugadores.get(turno);
             this.visual.imprimeInicio(this.mesa);
@@ -65,11 +69,11 @@ public class Juego {
 
                 // --- Camino A: El jugador humano aun no ha salido ---
                 if (!jugadorActual.isHaSalido()) {
-                    System.out.println("\nNo has salido. Intenta hacer tus " + valRumy.getPUNTOS_MINIMOS_SALIDA() + " puntos");
+                    System.out.println("\nNo has salido. Intenta hacer tus " + reglas.getPUNTOS_MINIMOS_SALIDA() + " puntos");
                     jugadorActual.sacarCartas(jugadaTemporal, visual);
 
                     if (!jugadaTemporal.isEmpty()) {
-                        if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
+                        if (valRumy.comprobar(jugadaTemporal, jugadorActual, this.reglas)) {
                             System.out.println("Jugada válida. Has salido");
                             Jugada nuevaJugada = JugadaGoes.crearJugada(jugadaTemporal);
                             mesa.agregarJugada(nuevaJugada);
@@ -98,11 +102,10 @@ public class Juego {
                         if (opcion == 1) {
                             jugadorActual.sacarCartas(jugadaTemporal, visual);
                             if (!jugadaTemporal.isEmpty()) {
-                                if (valRumy.comprobar(jugadaTemporal, jugadorActual)) {
+                                if (valRumy.comprobar(jugadaTemporal, jugadorActual, this.reglas)) {
                                     System.out.println("Jugada valida ");
                                     Jugada jugadaPropuesta = JugadaGoes.crearJugada(jugadaTemporal);
                                     mesa.agregarJugada(jugadaPropuesta);
-
                                     jugadorActual.eliminarCartasDelaMano(jugadaTemporal);
 
                                     visual.mostarNumeroDescarte(jugadorActual);
