@@ -1,13 +1,11 @@
 import java.util.List;
 
 public class ValidadorRummy {
-    private final int PUNTOS_MINIMOS_SALIDA = 10; //
 
-    public int getPUNTOS_MINIMOS_SALIDA() {
-        return PUNTOS_MINIMOS_SALIDA; //
-    }
 
-    public boolean comprobar(List<Carta> jugadaTemporal, Jugador jugadorActual) {
+
+
+    public boolean comprobar(List<Carta> jugadaTemporal, Jugador jugadorActual, ReglasJuego reglas) {
         // 1. Intentamos tratar la jugada como un Grupo
         Jugada jugadaPropuesta = JugadaGoes.crearJugada(jugadaTemporal);
           if (!jugadaPropuesta.validarJugada()) {
@@ -19,7 +17,7 @@ public class ValidadorRummy {
         if (!jugadorActual.isHaSalido()) {
             int puntosDeLaJugada = jugadaPropuesta.calcularPuntos();
 
-            if (puntosDeLaJugada >= PUNTOS_MINIMOS_SALIDA) {
+            if (puntosDeLaJugada >= reglas.getPUNTOS_MINIMOS_SALIDA()) {
                 jugadorActual.setHasalido(true);
                 System.out.println("Jugada válida. Has salido con " + puntosDeLaJugada + " puntos.");
                 return true;

@@ -12,8 +12,8 @@ public class Jugador {
          this.cartasPorJugador=new ArrayList<Carta>();
     }
 
-    public void repartir(Mazo mazoDelJuego){
-            for (int j = 0; j < 10; j++) {
+    public void repartir(Mazo mazoDelJuego, int cantidadCartas){
+            for (int j = 0; j < cantidadCartas; j++) {
                 recibirCartas(mazoDelJuego.cogerCarta());
             }
     }

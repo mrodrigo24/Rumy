@@ -12,17 +12,16 @@ public class Juego {
     private GestorIntercambios gestorIntercambios;
     private ReglasJuego reglas;
 
-    public Juego(ReglasJuego reglasElegidas) {
+    public Juego() {
         this.alguienHaGanado = false;
         this.turno = 0;
-
-        this.jugadores = mesa.prepararJugadores(maz,this.reglas);
+        //this.jugadores = mesa.prepararJugadores(maz,this.reglas);
         this.jugadaTemporal = new ArrayList<>();
         this.valRumy = new ValidadorRummy();
         this.visual = new Visualizador();
         this.controladorTurno = new ControladorTurno(this.visual);
         this.gestorIntercambios = new GestorIntercambios();
-        this.reglas=reglasElegidas;
+
     }
 
 
@@ -30,7 +29,7 @@ public class Juego {
         this.reglas = LectorTeclado.pedirVarianteJuego();
         this.maz = new Mazo(2);
         this.mesa = new Mesa();
-        mesa.prepararJugadores(maz, this.reglas);
+        this.jugadores = mesa.prepararJugadores(maz, this.reglas);
         while (!alguienHaGanado) {
             Jugador jugadorActual = jugadores.get(turno);
             this.visual.imprimeInicio(this.mesa);
@@ -47,7 +46,7 @@ public class Juego {
                 bot.decidirRoboAutomatico(this.maz, this.mesa.getMazoDescarte());
 
                 // 2. Fase de Jugadas Automática
-                bot.decidirJugadasAutomaticas(this.valRumy, this.mesa);
+                bot.decidirJugadasAutomaticas(this.valRumy, this.mesa,reglas);
 
                 // 3. Fase de Descarte Automática
                 Carta cartaTirada = bot.decidirDescarteAutomatico();

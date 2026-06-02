@@ -17,16 +17,16 @@ public class Mesa {
         return this.descarte;
     }
 
-    public List<Jugador> prepararJugadores(Mazo mazo) {
+    public List<Jugador> prepararJugadores(Mazo mazo, ReglasJuego reglas) {
         // El jugador 0 sera humano
         Jugador humano = new Jugador(0);
-        humano.repartir(mazo);
+        humano.repartir(mazo,reglas.cuantasRepartimos());
         this.jugadores.add(humano);
 
         // Los jugadores 1, 2 y 3 automaticos
         for (int i = 1; i < 4; i++) {
             JugadorIA bot = new JugadorIA(i);
-            bot.repartir(mazo);
+            bot.repartir(mazo,reglas.cuantasRepartimos());
             this.jugadores.add(bot);
         }
         return this.jugadores;

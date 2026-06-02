@@ -30,7 +30,7 @@ public class JugadorIA extends Jugador {
     }
 
 
-    public void decidirJugadasAutomaticas(ValidadorRummy valRumy, Mesa mesa) {
+    public void decidirJugadasAutomaticas(ValidadorRummy valRumy, Mesa mesa, ReglasJuego reglas) {
         System.out.println(this + " (IA) está analizando sus cartas para jugar...");
 
         // Creamos un simulacro: la máquina intenta enviar TODA su mano al validador
@@ -41,7 +41,7 @@ public class JugadorIA extends Jugador {
 
         if (!todasMisCartas.isEmpty()) {
             // Le preguntamos a tu validador si la combinación de toda la mano es legal
-            if (valRumy.comprobar(todasMisCartas, this)) {
+            if (valRumy.comprobar(todasMisCartas, this,reglas)) {
                 // Si el validador da el OK, creamos la jugada y la subimos a la mesa
                 Jugada nuevaJugada = JugadaGoes.crearJugada(todasMisCartas);
                 mesa.agregarJugada(nuevaJugada);

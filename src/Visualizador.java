@@ -49,4 +49,17 @@ public class Visualizador {
         System.out.println(jugadasEnMesa);
     }
 
+    public void imprimirMenu(){
+        System.out.println( """
+        === BIENVENIDO AL RUMMY EN JAVA ===
+
+        1. Jugar al Rummy Argentino (9 cartas, 10 pts para salir)
+
+        2. Jugar al Rummikub (14 cartas, 30 pts para salir)
+
+        3. Jugar al Gin Rummy (10 cartas, 0 pts para salir)
+
+        Selecciona una opción:""");
+    }
+
 }
