@@ -11,17 +11,16 @@ public class Juego {
     private ControladorTurno controladorTurno;
     private GestorIntercambios gestorIntercambios;
     private ReglasJuego reglas;
-
+    private List<String> historialMovimientos;
     public Juego() {
         this.alguienHaGanado = false;
         this.turno = 0;
-        //this.jugadores = mesa.prepararJugadores(maz,this.reglas);
         this.jugadaTemporal = new ArrayList<>();
         this.valRumy = new ValidadorRummy();
         this.visual = new Visualizador();
         this.controladorTurno = new ControladorTurno(this.visual);
         this.gestorIntercambios = new GestorIntercambios();
-
+        this.historialMovimientos = new ArrayList<>();
     }
 
 
@@ -33,7 +32,7 @@ public class Juego {
         this.mesa = new Mesa();
         this.jugadores = mesa.prepararJugadores(maz, this.reglas);
         } else {
-            // Si los jugadores ya existen, el objeto viene deserializado del disco duro
+
             System.out.println("Reanudando partida existente... ¡Que continúe el juego!");
         }
         while (!alguienHaGanado) {
@@ -60,11 +59,15 @@ public class Juego {
                     mesa.tirarAlDescarte(cartaTirada);
                     System.out.println(bot + " ha descartado " + cartaTirada);
                 }
-
-                // Finalizamos el turno del Bot y pasamos al siguiente
-                turno = (turno + 1) % 4;
-                System.out.println("\n-- CAMBIO DE TURNO --\n");
-
+                if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
+                    alguienHaGanado = true;
+                    registrarAccion("La partida ha finalizado. ¡Ganador: " + jugadorActual + "!");
+                    System.out.println("¡Ganador: " + jugadorActual + "!");
+                } else {
+                    // Finalizamos el turno del Bot y pasamos al siguiente
+                    turno = (turno + 1) % 4;
+                    System.out.println("\n-- CAMBIO DE TURNO --\n");
+                }
             } else {
                 // 👤 CAMINO HUMANO (Todo tu menú interactivo va metido aquí dentro)
                 jugadorActual.hacerBackupmanoJugador();
@@ -90,6 +93,8 @@ public class Juego {
                             if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
                                 alguienHaGanado = true;
                                 System.out.println("¡Ganador: " + jugadorActual + "!");
+                                registrarAccion("La partida ha finalizado. ¡Ganador: " + jugadorActual + "!");
+
                             }
                         } else {
                             System.out.println("Jugada no valida o puntos insuficientes.");
@@ -136,6 +141,7 @@ public class Juego {
                                 alguienHaGanado = true;
                                 terminarTurnoActual = true;
                                 System.out.println("Ganador " + jugadorActual + "!");
+                                registrarAccion("La partida ha finalizado. ¡Ganador: " + jugadorActual + "!");
                             }
                         } else if (opcion == 3) {
                             System.out.println("\n--- Iniciando fase de intercambio con el tablero ---");
@@ -166,4 +172,10 @@ public class Juego {
             } // Fin del bloque ELSE (Humano)
         } // Fin del bucle WHILE principal
     } // Fin del método jugar()
+    public void registrarAccion(String accion) {
+        this.historialMovimientos.add(accion);
+
+        GestorFicheros.guardarLog(this.historialMovimientos, "log_partida.txt");
+
+    }
 } // Fin de la clase Juego

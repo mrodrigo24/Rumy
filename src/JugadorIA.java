@@ -33,31 +33,59 @@ public class JugadorIA extends Jugador {
     public void decidirJugadasAutomaticas(ValidadorRummy valRumy, Mesa mesa, ReglasJuego reglas) {
         System.out.println(this + " (IA) está analizando sus cartas para jugar...");
 
-        // Creamos un simulacro: la máquina intenta enviar TODA su mano al validador
-        List<Carta> todasMisCartas = new ArrayList<>(this.getCartasPorJugador());
+        // 1. Hacemos una copia limpia de la mano de la IA para trabajar sobre ella
+        List<Carta> manoIA = new ArrayList<>(this.getCartasPorJugador());
+        manoIA.removeIf(c -> c == null);
 
-        // Quitamos los posibles nulls por seguridad en la copia
-        todasMisCartas.removeIf(c -> c == null);
+        boolean haJugadoAlgo = true;
 
-        if (!todasMisCartas.isEmpty()) {
-            // Le preguntamos a tu validador si la combinación de toda la mano es legal
-            if (valRumy.comprobar(todasMisCartas, this,reglas)) {
-                // Si el validador da el OK, creamos la jugada y la subimos a la mesa
-                Jugada nuevaJugada = JugadaGoes.crearJugada(todasMisCartas);
+        // 2. El bucle se repetirá mientras la IA siga encontrando combinaciones y tenga cartas
+        while (haJugadoAlgo && manoIA.size() >= 3) {
+            haJugadoAlgo = false;
+            List<Carta> combinacionEncontrada = null;
+
+            // 3. Algoritmo combinatorio: Buscamos tríos (subconjuntos de 3 cartas)
+            for (int i = 0; i < manoIA.size() - 2; i++) {
+                for (int j = i + 1; j < manoIA.size() - 1; j++) {
+                    for (int k = j + 1; k < manoIA.size(); k++) {
+
+                        // Creamos un trío temporal para probar
+                        List<Carta> trioPrueba = new ArrayList<>();
+                        trioPrueba.add(manoIA.get(i));
+                        trioPrueba.add(manoIA.get(j));
+                        trioPrueba.add(manoIA.get(k));
+
+                        // Le preguntamos al validador si este trío específico es legal
+                        if (valRumy.comprobar(trioPrueba, this, reglas)) {
+                            combinacionEncontrada = trioPrueba;
+                            haJugadoAlgo = true;
+                            break; // Rompemos el bucle 'k'
+                        }
+                    }
+                    if (haJugadoAlgo) break; // Rompemos el bucle 'j'
+                }
+                if (haJugadoAlgo) break; // Rompemos el bucle 'i'
+            }
+
+            // 4. Si encontramos un trío válido, lo bajamos a la mesa
+            if (haJugadoAlgo && combinacionEncontrada != null) {
+                Jugada nuevaJugada = JugadaGoes.crearJugada(combinacionEncontrada);
                 mesa.agregarJugada(nuevaJugada);
 
-                // Vaciamos su mano real porque ha colocado todas las cartas
-                this.getCartasPorJugador().clear();
-                System.out.println(this + " (IA) ha colocado una jugada maestra en la mesa.");
-            } else {
-                System.out.println(this + " (IA) no tiene combinaciones válidas en este turno. Pasa de fase.");
+                // Quitamos las cartas de la mano real del bot y de nuestra copia de análisis
+                this.eliminarCartasDelaMano(combinacionEncontrada);
+                manoIA.removeAll(combinacionEncontrada);
+
+                System.out.println(this + " (IA) ha colocado una jugada en la mesa: " + nuevaJugada);
             }
+        }
+
+        if (!haJugadoAlgo) {
+            System.out.println(this + " (IA) no tiene combinaciones válidas en este turno. Pasa de fase.");
         }
     }
 
-    /**
-     * REGLA 3 AUTOMÁTICA: ¿Qué carta tira al descarte?
-     */
+
     public Carta decidirDescarteAutomatico() {
         for (int i = 0; i < this.getCartasPorJugador().size(); i++) {
             Carta c = this.getCartasPorJugador().get(i);

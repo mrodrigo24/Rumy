@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.List;
 
 public class GestorFicheros {
 
@@ -34,5 +35,21 @@ public class GestorFicheros {
             e.printStackTrace();
         }
         return null; // Si algo falla, devolvemos null para que el programa sepa que no pudo cargar nada
+    }
+
+    public static void guardarLog(List<String> historial, String nombreArchivo) {
+        // El try-with-resources asegura que el archivo se cierre correctamente al terminar
+        try (FileWriter fw = new FileWriter(nombreArchivo);
+             PrintWriter pw = new PrintWriter(fw)) {
+
+            // Recorremos la lista línea por línea y la escribimos en el fichero
+            for (String linea : historial) {
+                pw.println(linea);
+            }
+            System.out.println("Historial de movimientos registrado con éxito en '" + nombreArchivo + "'.");
+
+        } catch (IOException e) {
+            System.out.println("¡Error al intentar guardar el archivo de log!: " + e.getMessage());
+        }
     }
 }

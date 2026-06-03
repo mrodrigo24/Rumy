@@ -39,8 +39,6 @@ public class Mazo implements Serializable {
 
     @Override
     public String toString() {
-        return "Mazo{" +
-                "cartas=" + cartas +
-                '}';
+        return "Mazo{" + "cartas=" + cartas + '}';
     }
 }

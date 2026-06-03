@@ -39,26 +39,28 @@ public class ControladorTurno {
         }
     }
 
-    /**
-     * Gestiona el proceso interactivo de selección de una carta para descartar al final del turno.
-     */
+
     public Carta hacerDescarte(Jugador jugador, Visualizador visual) {
         Carta cartaTirada = null;
+
         while (cartaTirada == null) {
             System.out.println("¿Qué número de carta quieres descartar?");
             int numero = LectorTeclado.leerEntero();
+
             cartaTirada = jugador.elegirCarta(numero, visual);
 
             if (cartaTirada == null) {
-                System.out.println("¡Error! Ese número no corresponde a ninguna carta válida de tu mano. Intenta nuevamente.");
+                System.out.println("\n¡Error! Ese número no corresponde a ninguna carta válida de tu mano.");
+                System.out.println("Por favor, vuelve a mirar tu mano actualizada e intenta de nuevo:");
+
+                visual.mostarNumeroDescarte(jugador);
             }
         }
+
         return cartaTirada;
     }
 
-    /**
-     * Gestiona la lógica interactiva para acomodar una carta de la mano en una jugada existente de la mesa.
-     */
+
     public void seleccionarCartaParaMesa(Jugador jugador, Mesa mesa) {
         System.out.println("¿Qué carta quieres agregar a la mesa?");
         int numeroCarta = LectorTeclado.leerEntero();
