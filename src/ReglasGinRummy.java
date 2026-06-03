@@ -1,4 +1,6 @@
-public class ReglasGinRummy implements ReglasJuego{
+import java.io.Serializable;
+
+public class ReglasGinRummy implements ReglasJuego, Serializable {
     @Override
     public int getPUNTOS_MINIMOS_SALIDA() {
         // En la variante argentina se usan 10 puntos.

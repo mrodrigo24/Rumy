@@ -1,5 +1,6 @@
+import java.io.Serializable;
 import java.util.*;
-public class Jugador {
+public class Jugador implements Serializable {
     private int numeroDeJugador;
     private int puntos;
     private List<Carta> cartasPorJugador;//La mano de cada jugador

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MazoDescarte {
-    private List<Carta> cartasDescarte;
+    private final List<Carta> cartasDescarte;
 
     public MazoDescarte() {
         this.cartasDescarte = new ArrayList<>();

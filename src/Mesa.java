@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
-public class Mesa {
+public class Mesa implements Serializable {
     private List<Jugador> jugadores = new ArrayList<>();
     private JugadasEnMesa jugadasEnMesa;
     private MazoDescarte descarte;

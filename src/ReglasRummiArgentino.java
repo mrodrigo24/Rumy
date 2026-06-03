@@ -1,4 +1,6 @@
-public class ReglasRummiArgentino implements ReglasJuego{
+import java.io.Serializable;
+
+public class ReglasRummiArgentino implements ReglasJuego, Serializable {
     @Override
     public int getPUNTOS_MINIMOS_SALIDA() {
         // En la variante argentina se usan 10 puntos.

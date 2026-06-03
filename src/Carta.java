@@ -1,4 +1,6 @@
-public class Carta implements Comparable <Carta>{
+import java.io.Serializable;
+
+public class Carta implements Comparable<Carta>, Serializable {
     private Simbolo simbolo;
     private Palos  palo;
 

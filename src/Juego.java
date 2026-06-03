@@ -26,10 +26,16 @@ public class Juego {
 
 
     public void jugar() {
+        if (this.jugadores == null) {
+            System.out.println("Configurando nueva partida...");
         this.reglas = LectorTeclado.pedirVarianteJuego();
         this.maz = new Mazo(2);
         this.mesa = new Mesa();
         this.jugadores = mesa.prepararJugadores(maz, this.reglas);
+        } else {
+            // Si los jugadores ya existen, el objeto viene deserializado del disco duro
+            System.out.println("Reanudando partida existente... ¡Que continúe el juego!");
+        }
         while (!alguienHaGanado) {
             Jugador jugadorActual = jugadores.get(turno);
             this.visual.imprimeInicio(this.mesa);
@@ -96,7 +102,7 @@ public class Juego {
                     boolean terminarTurnoActual = false;
                     while (!terminarTurnoActual) {
                         System.out.println("\n¿Qué deseas hacer? \n1 - crear una nueva jugada \n2 - anyadir una carta a la mesa\n3 - robar carta de la mesa\n4 - terminar turno y descartar");
-                        int opcion = LectorTeclado.leerEnteroEnRango(1, 4);
+                        int opcion = LectorTeclado.leerEnteroEnRango(1, 5);
 
                         if (opcion == 1) {
                             jugadorActual.sacarCartas(jugadaTemporal, visual);
@@ -134,9 +140,16 @@ public class Juego {
                         } else if (opcion == 3) {
                             System.out.println("\n--- Iniciando fase de intercambio con el tablero ---");
                             this.gestorIntercambios.solicitarYProcesarIntercambio(jugadorActual, this.mesa);
+
                         } else if (opcion == 4) {
                             System.out.println("Finalizando fase de jugadas. Procediendo al descarte obligatorio.");
                             terminarTurnoActual = true;
+                        }
+                        else if (opcion == 5) {
+                                GestorFicheros.guardarPartida(this, "partida.dat");
+                                System.out.println("Saliendo del juego...");
+                                System.exit(0);
+
                         }
                     }
                 }

@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Mazo {
-    private List<Carta> cartas =new ArrayList<>();
+public class Mazo implements Serializable {
+    private final List<Carta> cartas =new ArrayList<>();
     public Mazo(int  num){
         for (int i = 0; i < num; i++) {
             inicializarMazo();
