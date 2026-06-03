@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>Mesa.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #ed864a;}
+.s1 { color: #ebebeb;}
+.s2 { color: #ed864a; font-weight: bold;}
+.s3 { color: #7ec3e6;}
+</style>
+</head>
+<body bgcolor="#131314">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Mesa.java</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">java.util.List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s2">;</span>
+
+<span class="s3">// O también puedes usar: import java.util.*;</span>
+
+<span class="s0">public class </span><span class="s1">Mesa {</span>
+    <span class="s3">// Ahora ya no te dará error aquí:</span>
+    <span class="s0">private </span><span class="s1">List&lt;List&lt;Carta&gt;&gt; jugadasEnMesa</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">List&lt;Carta&gt; descarte</span><span class="s2">;</span>
+
+    <span class="s3">// Tu constructor para inicializar las listas</span>
+    <span class="s0">public </span><span class="s1">Mesa() {</span>
+        <span class="s0">this</span><span class="s1">.jugadasEnMesa = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s1">.descarte = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s2">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

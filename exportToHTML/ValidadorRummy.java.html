@@ -1,0 +1,119 @@
+<html>
+<head>
+<title>ValidadorRummy.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #ed864a;}
+.s1 { color: #ebebeb;}
+.s2 { color: #ed864a; font-weight: bold;}
+.s3 { color: #33ccff; font-weight: bold;}
+.s4 { color: #54b33e;}
+.s5 { color: #7ec3e6;}
+</style>
+</head>
+<body bgcolor="#131314">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ValidadorRummy.java</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">java.util.*</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java.util.Collections</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java.util.Iterator</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">ValidadorRummy {</span>
+
+    <span class="s0">public int </span><span class="s1">sumaPuntos(List&lt;Carta&gt; listaRecibida) {</span>
+        <span class="s0">int </span><span class="s1">sumaPuntos = </span><span class="s3">0</span><span class="s2">;</span>
+        <span class="s1">Collections.sort(listaRecibida)</span><span class="s2">;</span>
+        <span class="s1">Iterator&lt;Carta&gt; it = listaRecibida.iterator()</span><span class="s2">;</span>
+        <span class="s0">while </span><span class="s1">(it.hasNext()) {</span>
+            <span class="s1">Carta actual = it.next()</span><span class="s2">;</span>
+            <span class="s1">sumaPuntos += actual.getSimbolo().getValorNumerico()</span><span class="s2">;</span>
+        <span class="s1">}</span>
+        <span class="s1">System.out.println(sumaPuntos)</span><span class="s2">;</span>
+        <span class="s1">System.out.println(</span><span class="s4">&quot;Ha pasado 2&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s0">return </span><span class="s1">sumaPuntos</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">Grupos(List&lt;Carta&gt; listaRecibida) {</span>
+        <span class="s0">if </span><span class="s1">(listaRecibida.size() &lt; </span><span class="s3">3</span><span class="s1">) </span><span class="s0">return false</span><span class="s2">;</span>
+
+        <span class="s1">List&lt;Palos&gt; palosYaVistos = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s2">;</span>
+        <span class="s0">int </span><span class="s1">numeroReferencia = listaRecibida.get(</span><span class="s3">0</span><span class="s1">).getSimbolo().getValorNumerico()</span><span class="s2">;</span>
+
+        <span class="s0">for </span><span class="s1">(Carta actual : listaRecibida) {</span>
+            <span class="s5">// 1. Verificar si el palo ya ha salido (Regla de palos distintos)</span>
+            <span class="s0">if </span><span class="s1">(palosYaVistos.contains(actual.getPalo())) {</span>
+                <span class="s0">return false</span><span class="s2">;</span>
+            <span class="s1">}</span>
+            <span class="s1">palosYaVistos.add(actual.getPalo())</span><span class="s2">;</span>
+
+            <span class="s5">// 2. Verificar que todas las cartas tengan el mismo número</span>
+            <span class="s0">if </span><span class="s1">(actual.getSimbolo().getValorNumerico() != numeroReferencia) {</span>
+                <span class="s0">return false</span><span class="s2">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return true</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s0">public boolean </span><span class="s1">Escaleras(List&lt;Carta&gt; listaRecibida) {</span>
+        <span class="s5">// 1. El mínimo siempre primero</span>
+        <span class="s0">if </span><span class="s1">(listaRecibida.size() &lt; </span><span class="s3">3</span><span class="s1">) {</span>
+            <span class="s0">return false</span><span class="s2">;</span>
+        <span class="s1">}</span>
+
+        <span class="s5">// 2. Ordenar es vital para que n, n+1, n+2 funcione</span>
+        <span class="s1">Collections.sort(listaRecibida)</span><span class="s2">;</span>
+
+        <span class="s5">// 3. Tomamos la referencia del primer palo</span>
+        <span class="s1">Palos paloReferencia = listaRecibida.get(</span><span class="s3">0</span><span class="s1">).getPalo()</span><span class="s2">;</span>
+
+        <span class="s5">// 4. Empezamos a comparar desde la segunda carta (índice 1)</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s3">1</span><span class="s2">; </span><span class="s1">i &lt; listaRecibida.size()</span><span class="s2">; </span><span class="s1">i++) {</span>
+            <span class="s1">Carta actual = listaRecibida.get(i)</span><span class="s2">;</span>
+            <span class="s1">Carta anterior = listaRecibida.get(i - </span><span class="s3">1</span><span class="s1">)</span><span class="s2">;</span>
+
+            <span class="s5">// Comprobamos que el palo sea el mismo que el de la primera carta</span>
+            <span class="s0">if </span><span class="s1">(!actual.getPalo().equals(paloReferencia)) {</span>
+                <span class="s0">return false</span><span class="s2">;</span>
+            <span class="s1">}</span>
+
+            <span class="s5">// Comprobamos que el número sea exactamente uno más que el anterior</span>
+            <span class="s0">if </span><span class="s1">(actual.getSimbolo().getValorNumerico() != anterior.getSimbolo().getValorNumerico()+ </span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s0">return false</span><span class="s2">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return true</span><span class="s2">; </span><span class="s5">// Si pasa todo el bucle, es una escalera perfecta</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">comprobar(List&lt;Carta&gt; jugadaTemporal</span><span class="s2">, </span><span class="s1">Jugador jugadorActual) {</span>
+        <span class="s0">boolean </span><span class="s1">esFormacionValida = Grupos(jugadaTemporal) || Escaleras(jugadaTemporal)</span><span class="s2">;</span>
+
+        <span class="s0">if </span><span class="s1">(!esFormacionValida) {</span>
+            <span class="s0">return false</span><span class="s2">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if </span><span class="s1">(!jugadorActual.isHaSalido()) {</span>
+            <span class="s0">if </span><span class="s1">(sumaPuntos(jugadaTemporal) &gt;= </span><span class="s3">30</span><span class="s1">) {</span>
+                <span class="s1">jugadorActual.setHasalido(</span><span class="s0">true</span><span class="s1">)</span><span class="s2">;</span>
+                <span class="s1">System.out.println(</span><span class="s4">&quot;Ha pasado 1&quot;</span><span class="s1">)</span><span class="s2">;</span>
+                <span class="s0">return true</span><span class="s2">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">System.out.println(sumaPuntos(jugadaTemporal))</span><span class="s2">;</span>
+                <span class="s0">return false</span><span class="s2">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return true</span><span class="s2">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+
+
+
+</pre>
+</body>
+</html>
