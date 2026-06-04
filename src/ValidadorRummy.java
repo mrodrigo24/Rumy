@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.List;
 
-public class ValidadorRummy {
+public class ValidadorRummy implements Serializable {
 
     public boolean comprobar(List<Carta> jugadaTemporal, Jugador jugadorActual, ReglasJuego reglas) {
         //Intentamos tratar la jugada como un Grupo
@@ -13,13 +14,12 @@ public class ValidadorRummy {
         // Validamos la condición de salida si el jugador aún no ha salido.
         if (!jugadorActual.isHaSalido()) {
             int puntosDeLaJugada = jugadaPropuesta.calcularPuntos();
-
             if (puntosDeLaJugada >= reglas.getPUNTOS_MINIMOS_SALIDA()) {
                 jugadorActual.setHasalido(true);
-                System.out.println("Jugada válida. Has salido con " + puntosDeLaJugada + " puntos.");
+                System.out.println("Jugada de apertura válida. " + jugadorActual + " ha salido con " + puntosDeLaJugada + " puntos.");
                 return true;
             } else {
-                System.out.println("Puntos insuficientes para salir. Llevas: " + puntosDeLaJugada);
+                System.out.println("Puntos insuficientes para la apertura de " + jugadorActual + ". Requeridos: " + reglas.getPUNTOS_MINIMOS_SALIDA() + ", Ofrecidos: " + puntosDeLaJugada);
                 return false;
             }
         }

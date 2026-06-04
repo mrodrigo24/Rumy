@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JugadasEnMesa {
+public class JugadasEnMesa implements Serializable {
     private List<Jugada> listaJugadas;
 
     // Constructor que tú creaste

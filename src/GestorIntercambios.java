@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.List;
 
-public class GestorIntercambios {
+public class GestorIntercambios implements Serializable {
 
 
     public void solicitarYProcesarIntercambio(Jugador jugador, Mesa mesa) {

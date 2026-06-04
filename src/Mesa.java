@@ -19,6 +19,7 @@ public class Mesa implements Serializable {
     }
 
     public List<Jugador> prepararJugadores(Mazo mazo, ReglasJuego reglas) {
+        this.jugadores.clear();
         // El jugador 0 sera humano
         Jugador humano = new Jugador(0);
         humano.repartir(mazo,reglas.cuantasRepartimos());

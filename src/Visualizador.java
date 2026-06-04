@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class Visualizador {
+public class Visualizador implements Serializable {
     Map<Integer, Carta> opciones = new HashMap<>();
 
     public Map<Integer, Carta> getOpciones() {

@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grupo extends Jugada{
+public class Grupo extends Jugada implements Serializable {
 
     public Grupo(List<Carta> cartasIniciales) {
         super(cartasIniciales);

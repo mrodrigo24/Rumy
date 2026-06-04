@@ -1,5 +1,6 @@
+import java.io.Serializable;
 import java.util.*;
-public class Juego {
+public class Juego implements Serializable {
     private boolean alguienHaGanado;
     private int turno;
     private Mazo maz;
@@ -12,6 +13,7 @@ public class Juego {
     private GestorIntercambios gestorIntercambios;
     private ReglasJuego reglas;
     private List<String> historialMovimientos;
+
     public Juego() {
         this.alguienHaGanado = false;
         this.turno = 0;
@@ -27,10 +29,10 @@ public class Juego {
     public void jugar() {
         if (this.jugadores == null) {
             System.out.println("Configurando nueva partida...");
-        this.reglas = LectorTeclado.pedirVarianteJuego();
-        this.maz = new Mazo(2);
-        this.mesa = new Mesa();
-        this.jugadores = mesa.prepararJugadores(maz, this.reglas);
+            this.reglas = LectorTeclado.pedirVarianteJuego();
+            this.maz = new Mazo(2);
+            this.mesa = new Mesa();
+            this.jugadores = mesa.prepararJugadores(maz, this.reglas);
         } else {
             System.out.println("Reanudando partida existente");
         }
@@ -49,7 +51,7 @@ public class Juego {
                 bot.decidirRoboAutomatico(this.maz, this.mesa.getMazoDescarte());
                 registrarAccion(bot + " ha realizado su fase de robo.");
                 // Fase de Jugadas Automática
-                bot.decidirJugadasAutomaticas(this.valRumy, this.mesa,reglas);
+                bot.decidirJugadasAutomaticas(this.valRumy, this.mesa, reglas);
 
                 // Fase de Descarte Automática
                 Carta cartaTirada = bot.decidirDescarteAutomatico();
@@ -75,116 +77,98 @@ public class Juego {
                 // fase mia de robo
                 controladorTurno.deDondeRobar(jugadorActual, maz, mesa.getMazoDescarte());
                 registrarAccion(jugadorActual + " he robado una carta.");
-                // todavia no he salido
-                if (!jugadorActual.isHaSalido()) {
-                    System.out.println("\nNo has salido. Intenta hacer tus " + reglas.getPUNTOS_MINIMOS_SALIDA() + " puntos");
-                    jugadorActual.sacarCartas(jugadaTemporal, visual);
-
-                    if (!jugadaTemporal.isEmpty()) {
-                        if (valRumy.comprobar(jugadaTemporal, jugadorActual, this.reglas)) {
-                            System.out.println("Jugada válida. Has salido");
-                            Jugada nuevaJugada = JugadaGoes.crearJugada(jugadaTemporal);
-                            mesa.agregarJugada(nuevaJugada);
-                            jugadorActual.setHasalido(true);
-                            jugadorActual.eliminarCartasDelaMano(jugadaTemporal);
-
-                            visual.mostarNumeroDescarte(jugadorActual);
-
-                            if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
-                                alguienHaGanado = true;
-                                System.out.println("¡Ganador: " + jugadorActual + "!");
-                                registrarAccion("La partida ha finalizado. ¡Ganador: " + jugadorActual + "!");
-                                System.exit(0);
-                            }
-                        } else {
-                            System.out.println("Jugada no valida o puntos insuficientes.");
-                            jugadorActual.restaurarmano();
-                            visual.mostarNumeroDescarte(jugadorActual);
-                            jugadaTemporal.clear();
-                            System.out.println("turno cancelado");
-                            turno = (turno + 1) % 4;
-                            continue;
-
-                        }
+                boolean terminarTurnoActual = false;
+                while (!terminarTurnoActual) {
+                    // todavia no he salido
+                    if (!jugadorActual.isHaSalido()) {
+                        System.out.println("\n[ESTADO: No has salido a la mesa. Necesitas: " + reglas.getPUNTOS_MINIMOS_SALIDA() + " puntos]");
+                    } else {
+                        System.out.println("\n[ESTADO: Ya has salido a la mesa]");
                     }
-                } else {
-                    // Ya he salido
-                    boolean terminarTurnoActual = false;
-                    while (!terminarTurnoActual) {
-                        System.out.println("\n¿Qué deseas hacer? \n1 - crear una nueva jugada \n2 - anyadir una carta a la mesa\n3 - robar carta de la mesa\n4 - terminar turno y descartar\n5 - guardar y salir");
-                        int opcion = LectorTeclado.leerEnteroEnRango(1, 5);
 
-                        if (opcion == 1) {
-                            jugadorActual.sacarCartas(jugadaTemporal, visual);
-                            if (!jugadaTemporal.isEmpty()) {
-                                if (valRumy.comprobar(jugadaTemporal, jugadorActual, this.reglas)) {
-                                    System.out.println("Jugada valida ");
-                                    Jugada jugadaPropuesta = JugadaGoes.crearJugada(jugadaTemporal);
-                                    mesa.agregarJugada(jugadaPropuesta);
-                                    jugadorActual.eliminarCartasDelaMano(jugadaTemporal);
-                                    registrarAccion(jugadorActual + " ha creado una nueva jugada en la mesa.");
-                                    visual.mostarNumeroDescarte(jugadorActual);
 
-                                    jugadaTemporal.clear();
-                                    if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
-                                        alguienHaGanado = true;
-                                        terminarTurnoActual = true;
-                                        System.out.println("Ganador " + jugadorActual + "!");
-                                        registrarAccion("La partida ha finalizado. ¡Ganador: " + jugadorActual + "!");
-                                        System.exit(0);
-                                    }
-                                } else {
-                                    System.out.println("Jugada no valida");
-                                    jugadorActual.restaurarmano();
-                                    jugadaTemporal.clear();
+                    System.out.println("\n¿Qué deseas hacer? \n1 - crear una nueva jugada \n2 - anyadir una carta a la mesa\n3 - robar carta de la mesa\n4 - terminar turno y descartar\n5 - guardar y salir");
+                    int opcion = LectorTeclado.leerEnteroEnRango(1, 5);
+
+                    if (opcion == 1) {
+                        jugadorActual.sacarCartas(jugadaTemporal, visual);
+                        if (!jugadaTemporal.isEmpty()) {
+                            if (valRumy.comprobar(jugadaTemporal, jugadorActual, this.reglas)) {
+                                System.out.println("Jugada valida ");
+                                Jugada nuevaJugada = JugadaGoes.crearJugada(jugadaTemporal);
+                                mesa.agregarJugada(nuevaJugada);
+                                jugadorActual.eliminarCartasDelaMano(jugadaTemporal);
+                                registrarAccion(jugadorActual + " ha creado una nueva jugada en la mesa.");
+                                visual.mostarNumeroDescarte(jugadorActual);
+
+                                jugadaTemporal.clear();
+                                if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
+                                    alguienHaGanado = true;
+                                    terminarTurnoActual = true;
+                                    System.out.println("Ganador " + jugadorActual + "!");
+                                    registrarAccion("La partida ha finalizado. ¡Ganador: " + jugadorActual + "!");
+                                    System.exit(0);
                                 }
                             } else {
-                                System.out.println("Has cancelado la creación de la jugada. Volviendo al menú.");
+                                System.out.println("Jugada no valida");
+                                jugadorActual.restaurarmano();
+                                jugadaTemporal.clear();
                             }
+                        } else {
+                            System.out.println("Has cancelado la creación de la jugada. Volviendo al menú.");
+                        }
 
-                        } else if (opcion == 2) {
-                            controladorTurno.seleccionarCartaParaMesa(jugadorActual, mesa);
-                            registrarAccion(jugadorActual + " ha intentado añadir una carta a una jugada de la mesa.");
-                            if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
-                                alguienHaGanado = true;
-                                terminarTurnoActual = true;
-                                System.out.println("Ganador " + jugadorActual + "!");
-                                registrarAccion("La partida ha finalizado. ¡Ganador: " + jugadorActual + "!");
-                                System.exit(0);
-                            }
-                        } else if (opcion == 3) {
-                            System.out.println("\n--- Iniciando fase de intercambio con el tablero ---");
-                            this.gestorIntercambios.solicitarYProcesarIntercambio(jugadorActual, this.mesa);
-                            registrarAccion(jugadorActual + " ha realizado un intercambio con el tablero.");
-                        } else if (opcion == 4) {
-                            System.out.println("Finalizando fase de jugadas. Procediendo al descarte obligatorio.");
+                    } else if (opcion == 2) {
+                        if (!jugadorActual.isHaSalido()) {
+                            System.out.println("¡Acción denegada! No puedes añadir cartas a la mesa hasta que no hayas salido primero con una jugada propia (Opción 1).");
+                            continue;
+                        }
+                        controladorTurno.seleccionarCartaParaMesa(jugadorActual, mesa);
+                        registrarAccion(jugadorActual + " ha intentado añadir una carta a una jugada de la mesa.");
+                        if (jugadorActual.alguienHaGanado(jugadorActual.getCartasPorJugador())) {
+                            alguienHaGanado = true;
                             terminarTurnoActual = true;
+                            System.out.println("Ganador " + jugadorActual + "!");
+                            registrarAccion("La partida ha finalizado. ¡Ganador: " + jugadorActual + "!");
+                            System.exit(0);
                         }
-                        else if (opcion == 5) {
-                                GestorFicheros.guardarPartida(this, "partida.dat");
-                                System.out.println("Saliendo del juego...");
-                                System.exit(0);
+                    } else if (opcion == 3) {
+                        if (!jugadorActual.isHaSalido()) {
+                            System.out.println("¡Acción denegada! No puedes realizar intercambios con el tablero hasta que no hayas completado tu salida (Opción 1).");
+                            continue;
+                        }
+                        System.out.println("\n--- Iniciando fase de intercambio con el tablero ---");
+                        this.gestorIntercambios.solicitarYProcesarIntercambio(jugadorActual, this.mesa);
+                        registrarAccion(jugadorActual + " ha realizado un intercambio con el tablero.");
+                    } else if (opcion == 4) {
+                        System.out.println("Finalizando fase de jugadas. Procediendo al descarte obligatorio.");
+                        terminarTurnoActual = true;
 
-                        }
+                    } else if (opcion == 5) {
+                        GestorFicheros.guardarPartida(this, "partida.dat");
+                        System.out.println("Saliendo del juego...");
+                        System.exit(0);
+
                     }
                 }
 
-                // --- Final de turno exclusivo del Humano ---
-                if (!alguienHaGanado) {
-                    Carta desc = controladorTurno.hacerDescarte(jugadorActual, this.visual);
-                    mesa.tirarAlDescarte(desc);
-                    registrarAccion(jugadorActual + " se ha descartado de " + desc);
-                    jugadaTemporal.clear();
-                    turno = (turno + 1) % 4;
-                    System.out.println("\n--- CAMBIO DE TURNO ---");
-                }
-            } // Fin del bloque ELSE (Humano)
-        } // Fin del bucle WHILE principal
-    } // Fin del método jugar()
-    public void registrarAccion(String accion) {
-        this.historialMovimientos.add(accion);
 
-        GestorFicheros.guardarLog(this.historialMovimientos, "log_partida.txt");
 
-    }
-} // Fin de la clase Juego
+            // --- Final de turno exclusivo del Humano ---
+            if (!alguienHaGanado) {
+                Carta desc = controladorTurno.hacerDescarte(jugadorActual, this.visual);
+                mesa.tirarAlDescarte(desc);
+                registrarAccion(jugadorActual + " se ha descartado de " + desc);
+                jugadaTemporal.clear();
+                turno = (turno + 1) % 4;
+                System.out.println("\n--- CAMBIO DE TURNO ---");
+            }
+        } // Llave 1: Cierra el bloque ELSE (Humano) que te faltaba por cerrar antes del while
+    } // Llave 2: Cierra el bucle WHILE principal
+} // Llave 3: Cierra el método jugar()
+
+public void registrarAccion(String accion) {
+    this.historialMovimientos.add(accion);
+    GestorFicheros.guardarLog(this.historialMovimientos, "log_partida.txt");
+}
+} // Llave 4: Cierra la clase Juego por completo

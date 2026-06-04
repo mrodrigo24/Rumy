@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Escalera extends Jugada {
+public class Escalera extends Jugada implements Serializable {
 
     public Escalera(List<Carta> cartasIniciales) {
         super(cartasIniciales);

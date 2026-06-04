@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class Jugada {
+public abstract class Jugada implements Serializable {
     protected List<Carta> listaRecibida;
 
     // Constructor: obliga a que cualquier jugada nazca con sus cartas iniciales

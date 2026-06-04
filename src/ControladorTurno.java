@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.List;
 
-public class ControladorTurno {
+public class ControladorTurno implements Serializable {
     private Visualizador visual;
 
     public ControladorTurno(Visualizador visual) {
