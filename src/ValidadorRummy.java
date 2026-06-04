@@ -2,17 +2,14 @@ import java.util.List;
 
 public class ValidadorRummy {
 
-
-
-
     public boolean comprobar(List<Carta> jugadaTemporal, Jugador jugadorActual, ReglasJuego reglas) {
-        // 1. Intentamos tratar la jugada como un Grupo
+        //Intentamos tratar la jugada como un Grupo
         Jugada jugadaPropuesta = JugadaGoes.crearJugada(jugadaTemporal);
           if (!jugadaPropuesta.validarJugada()) {
                 return false;
             }
 
-        // 2. Si llegamos aquí, la formación es válida (es Grupo o Escalera).
+
         // Validamos la condición de salida si el jugador aún no ha salido.
         if (!jugadorActual.isHaSalido()) {
             int puntosDeLaJugada = jugadaPropuesta.calcularPuntos();

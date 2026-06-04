@@ -39,15 +39,13 @@ public class GestorFicheros {
 
     public static void guardarLog(List<String> historial, String nombreArchivo) {
         // El try-with-resources asegura que el archivo se cierre correctamente al terminar
-        try (FileWriter fw = new FileWriter(nombreArchivo);
+        try (FileWriter fw = new FileWriter(nombreArchivo,true);
              PrintWriter pw = new PrintWriter(fw)) {
 
             // Recorremos la lista línea por línea y la escribimos en el fichero
-            for (String linea : historial) {
-                pw.println(linea);
+            if (!historial.isEmpty()) {
+                pw.println(historial.get(historial.size() - 1));
             }
-            System.out.println("Historial de movimientos registrado con éxito en '" + nombreArchivo + "'.");
-
         } catch (IOException e) {
             System.out.println("¡Error al intentar guardar el archivo de log!: " + e.getMessage());
         }

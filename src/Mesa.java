@@ -24,7 +24,7 @@ public class Mesa implements Serializable {
         humano.repartir(mazo,reglas.cuantasRepartimos());
         this.jugadores.add(humano);
 
-        // Los jugadores 1, 2 y 3 automaticos
+        // 1, 2 y 3
         for (int i = 1; i < 4; i++) {
             JugadorIA bot = new JugadorIA(i);
             bot.repartir(mazo,reglas.cuantasRepartimos());

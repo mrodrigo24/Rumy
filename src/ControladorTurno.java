@@ -7,20 +7,18 @@ public class ControladorTurno {
         this.visual = visual;
     }
 
-    /**
-     * Gestiona de forma interactiva la fase de robo del jugador al inicio de su turno.
-     */
+
     public void deDondeRobar(Jugador jugador, Mazo mazoPrincipal, MazoDescarte mazoDescarte) {
         // 1. Si el descarte está vacío, se le obliga a robar del mazo principal
         if (mazoDescarte.estaVacio()) {
-            System.out.println("El mazo de descarte está vacío. Robas del mazo principal.");
+            System.out.println("Robas del mazo");
             jugador.recibirCartas(mazoPrincipal.cogerCarta());
             return;
         }
 
         // 2. Si hay cartas, se le muestra la última y se le da a elegir
-        System.out.println("Última carta en el descarte: " + mazoDescarte.verUltimaCarta());
-        System.out.println("¿De dónde quieres robar? \n1 - Mazo Principal (Oculta) \n2 - Mazo de Descarte");
+        System.out.println("Última carta en el mazoDescarte: " + mazoDescarte.verUltimaCarta());
+        System.out.println("¿De dónde quieres robar? \n1 - mazoPrincipal (Oculta) \n2 - Mazo de Descarte");
         int numero = LectorTeclado.leerEnteroEnRango(1, 2);
 
         switch (numero) {

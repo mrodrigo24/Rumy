@@ -35,39 +35,43 @@ public class JugadorIA extends Jugador {
 
         // 1. Hacemos una copia limpia de la mano de la IA para trabajar sobre ella
         List<Carta> manoIA = new ArrayList<>(this.getCartasPorJugador());
-        manoIA.removeIf(c -> c == null);
+        for (int i = manoIA.size() - 1; i >= 0; i--) {
+            if (manoIA.get(i) == null) {
+                manoIA.remove(i);
+            }
+        }
 
         boolean haJugadoAlgo = true;
 
-        // 2. El bucle se repetirá mientras la IA siga encontrando combinaciones y tenga cartas
+        // bucle repite mientras no encontremos combinacions
         while (haJugadoAlgo && manoIA.size() >= 3) {
             haJugadoAlgo = false;
             List<Carta> combinacionEncontrada = null;
 
-            // 3. Algoritmo combinatorio: Buscamos tríos (subconjuntos de 3 cartas)
+            //Buscamos trios
             for (int i = 0; i < manoIA.size() - 2; i++) {
                 for (int j = i + 1; j < manoIA.size() - 1; j++) {
                     for (int k = j + 1; k < manoIA.size(); k++) {
 
-                        // Creamos un trío temporal para probar
+                        // creamos minitrios
                         List<Carta> trioPrueba = new ArrayList<>();
                         trioPrueba.add(manoIA.get(i));
                         trioPrueba.add(manoIA.get(j));
                         trioPrueba.add(manoIA.get(k));
 
-                        // Le preguntamos al validador si este trío específico es legal
+                        // Comprobamos los minitrios
                         if (valRumy.comprobar(trioPrueba, this, reglas)) {
                             combinacionEncontrada = trioPrueba;
                             haJugadoAlgo = true;
-                            break; // Rompemos el bucle 'k'
+                            break;
                         }
                     }
-                    if (haJugadoAlgo) break; // Rompemos el bucle 'j'
+                    if (haJugadoAlgo) break;
                 }
-                if (haJugadoAlgo) break; // Rompemos el bucle 'i'
+                if (haJugadoAlgo) break;
             }
 
-            // 4. Si encontramos un trío válido, lo bajamos a la mesa
+            //encontramos trio, lo bajamos a la mesa
             if (haJugadoAlgo && combinacionEncontrada != null) {
                 Jugada nuevaJugada = JugadaGoes.crearJugada(combinacionEncontrada);
                 mesa.agregarJugada(nuevaJugada);
@@ -90,7 +94,7 @@ public class JugadorIA extends Jugador {
         for (int i = 0; i < this.getCartasPorJugador().size(); i++) {
             Carta c = this.getCartasPorJugador().get(i);
             if (c != null) {
-                // Llamamos a elegirCarta pasándole el índice directo 'i' (base 0)
+                // llamamos a elegir carta
                 return this.elegirCarta(i);
             }
         }

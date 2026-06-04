@@ -23,28 +23,6 @@ public class Jugador implements Serializable {
             cartasPorJugador.add(carta);
     }
 
-    public void mostrarDescarte(List<Carta> listadescarte) {
-        if (listadescarte.isEmpty()) {
-            System.out.println("El mazo de descarte está vacío.");
-        } else {
-            System.out.println("Descarte visto por " + numeroDeJugador + ":");
-            int contador = 1;
-            Iterator<Carta> it = listadescarte.iterator();
-
-            while (it.hasNext()) {
-                Carta c = it.next();
-                System.out.println(contador + "- " + c);
-                contador++;
-            }
-        }
-    }
-
-    public void recogerDescarte(List<Carta> listacomun){
-            if(!listacomun.isEmpty()){
-                Carta c=listacomun.removeLast();
-                this.cartasPorJugador.add(c);
-            }
-    }
 
     public void setHasalido(boolean haSalido){
         this.haSalido=haSalido;

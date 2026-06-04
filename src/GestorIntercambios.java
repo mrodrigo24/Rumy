@@ -2,22 +2,18 @@ import java.util.List;
 
 public class GestorIntercambios {
 
-    /**
-     * Gestiona el proceso interactivo de intercambio cuando el jugador pulsa la opción 3.
-     * * @param jugador El jugador que está jugando su turno actual.
-     * @param mesa    El objeto general de la mesa de juego.
-     */
+
     public void solicitarYProcesarIntercambio(Jugador jugador, Mesa mesa) {
-        // 1. Conseguimos el acceso al nuevo contenedor inteligente de jugadas
+        // Conseguimos el acceso al nuevo contenedor inteligente de jugadas
         JugadasEnMesa jugadas = mesa.getJugadasEnMesa();
 
         // Si no hay jugadas en la mesa, cancelamos inmediatamente
         if (jugadas.size() == 0) {
-            System.out.println("No hay ninguna jugada en la mesa con la que puedas intercambiar.");
+            System.out.println("No hay jugadas en la mesa.");
             return;
         }
 
-        // 2. Preguntamos por la carta de la mano del jugador
+        // Preguntamos por la carta de la mano del jugador
         System.out.println("¿Qué número de carta de tu mano quieres ofrecer para el intercambio?");
         int numeroMano = LectorTeclado.leerEnteroEnRango(1, jugador.getCartasPorJugador().size());
 
@@ -28,12 +24,12 @@ public class GestorIntercambios {
             return;
         }
 
-        // 3. Preguntamos por la jugada de la mesa
+        // Preguntamos por la jugada de la mesa
         System.out.println("¿A qué número de jugada de la mesa quieres dirigir el intercambio?");
         int numeroJugadaMesa = LectorTeclado.leerEnteroEnRango(1, jugadas.size());
         int indiceJugada = numeroJugadaMesa - 1; // Ajustamos al índice base 0 de las listas
 
-        // 4. Preguntamos qué carta de esa jugada se quiere llevar
+        // Preguntamos qué carta de esa jugada se quiere llevar
         Jugada jugadaSeleccionada = jugadas.get(indiceJugada);
         System.out.println("Cartas disponibles en la Jugada " + numeroJugadaMesa + ":");
         List<Carta> cartasEnJugada = jugadaSeleccionada.getListaRecibida();
@@ -45,7 +41,7 @@ public class GestorIntercambios {
         int numeroCartaMesa = LectorTeclado.leerEnteroEnRango(1, cartasEnJugada.size());
         int indiceCartaMesa = numeroCartaMesa - 1;
 
-        // 5. LLAMADA AL TABLERO: Procesamos el intercambio real con las 3 Reglas de Oro
+        // LLAMADA AL TABLERO: Procesamos el intercambio real con las 3 Reglas de Oro
         Carta cartaRescatada = jugadas.intercambiarCarta(indiceJugada, cartaOfrecida, indiceCartaMesa);
 
         if (cartaRescatada != null) {

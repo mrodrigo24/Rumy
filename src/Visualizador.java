@@ -26,18 +26,18 @@ public class Visualizador {
         List<Carta> copiaOrdenada = new ArrayList<>(jugador.getCartasPorJugador());
         Collections.sort(copiaOrdenada);
 
-        // Limpiamos el mapa de opciones anterior para que no acumule basura de turnos pasados
-        //opciones.clear();
+        // Llimpiamos el mapa de opciones anteriores
+        opciones.clear();
         System.out.println("\n=== TU MANO (ORDENADA) ===");
 
         // 2. Usamos un bucle clasico con indice para que los números vayan seguidos: 1, 2, 3...
         for (int i = 0; i < copiaOrdenada.size(); i++) {
             Carta c = copiaOrdenada.get(i);
 
-            // El número para pulsar será la posición en la copia ordenada + 1 (para que empiece en 1)
+
             int numeroParaPulsar = i + 1;
 
-            // Guardamos en tu mapa de opciones (vinculará el número 1, 2, 3... con su carta)
+            // Guardamos el mapa de opciones
             opciones.put(numeroParaPulsar, c);
 
             // Imprimimos de manera limpia y consecutiva
