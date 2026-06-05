@@ -10,14 +10,14 @@ public class ControladorTurno implements Serializable {
 
 
     public void deDondeRobar(Jugador jugador, Mazo mazoPrincipal, MazoDescarte mazoDescarte) {
-        // 1. Si el descarte está vacío, se le obliga a robar del mazo principal
+        //Descarte vacioMazoPrincipal
         if (mazoDescarte.estaVacio()) {
             System.out.println("Robas del mazo");
             jugador.recibirCartas(mazoPrincipal.cogerCarta());
             return;
         }
 
-        // 2. Si hay cartas, se le muestra la última y se le da a elegir
+        // haycartasMostramosLaUltima
         System.out.println("Última carta en el mazoDescarte: " + mazoDescarte.verUltimaCarta());
         System.out.println("¿De dónde quieres robar? \n1 - mazoPrincipal (Oculta) \n2 - Mazo de Descarte");
         int numero = LectorTeclado.leerEnteroEnRango(1, 2);
@@ -70,7 +70,7 @@ public class ControladorTurno implements Serializable {
             int numJugada = LectorTeclado.leerEntero();
             int indiceMesa = numJugada - 1;
 
-            // Validamos que el índice de la jugada elegida exista en la mesa
+            // Validamos inidice apra sber que e3xiste
             if (indiceMesa >= 0 && indiceMesa < mesa.getJugadasEnMesa().size()) {
                 if (mesa.anyadirCartaAJugada(indiceMesa, cartaSeleccionada)) {
                     System.out.println("OK. Carta anyadida a la jugada " + numJugada + ".");

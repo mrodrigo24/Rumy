@@ -15,13 +15,13 @@ public class GestorIntercambios implements Serializable {
         }
 
         // Preguntamos por la carta de la mano del jugador
-        System.out.println("¿Qué número de carta de tu mano quieres ofrecer para el intercambio?");
+        System.out.println("¿Numero carta de tu mano quieres ofrecer para el intercambio?");
         int numeroMano = LectorTeclado.leerEnteroEnRango(1, jugador.getCartasPorJugador().size());
 
         // Extraemos temporalmente la carta de su mano (pone un null en su lugar)
         Carta cartaOfrecida = jugador.elegirCarta(numeroMano);
         if (cartaOfrecida == null) {
-            System.out.println("Error: Esa carta ya no está disponible.");
+            System.out.println("Esa carta ya no está disponible.");
             return;
         }
 
@@ -30,7 +30,7 @@ public class GestorIntercambios implements Serializable {
         int numeroJugadaMesa = LectorTeclado.leerEnteroEnRango(1, jugadas.size());
         int indiceJugada = numeroJugadaMesa - 1; // Ajustamos al índice base 0 de las listas
 
-        // Preguntamos qué carta de esa jugada se quiere llevar
+        // Preguntamos que carta de la jugada elegida se quiere llevar
         Jugada jugadaSeleccionada = jugadas.get(indiceJugada);
         System.out.println("Cartas disponibles en la Jugada " + numeroJugadaMesa + ":");
         List<Carta> cartasEnJugada = jugadaSeleccionada.getListaRecibida();
@@ -42,15 +42,15 @@ public class GestorIntercambios implements Serializable {
         int numeroCartaMesa = LectorTeclado.leerEnteroEnRango(1, cartasEnJugada.size());
         int indiceCartaMesa = numeroCartaMesa - 1;
 
-        // LLAMADA AL TABLERO: Procesamos el intercambio real con las 3 Reglas de Oro
+        // hacemos el intercambio
         Carta cartaRescatada = jugadas.intercambiarCarta(indiceJugada, cartaOfrecida, indiceCartaMesa);
 
         if (cartaRescatada != null) {
-            // ÉXITO: El intercambio fue legal. Guardamos la carta de la mesa en la mano del jugador
+            //  El intercambio fue legal. Carta a Mano
             jugador.volverLaCartaAlMazodeJugador(cartaRescatada);
             System.out.println("¡Perfecto! Has recibido " + cartaRescatada + " en tu mano.");
         } else {
-            // FRACASO: El movimiento rompió las reglas. Devolvemos la carta ofrecida a la mano del jugador
+            // Fracaso. transaccion atomica para devolver cartas
             jugador.volverLaCartaAlMazodeJugador(cartaOfrecida);
             System.out.println("El trato se ha cancelado. Tu carta regresa a tu mano.");
         }

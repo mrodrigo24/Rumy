@@ -24,13 +24,13 @@ public class Grupo extends Jugada implements Serializable {
             if (actual.getSimbolo() == Simbolo.COMODIN) {
                 continue;
             }
-            // 1. ver si el palo ha salico
+            // ver si el palo ha salico
             if (palosYaVistos.contains(actual.getPalo())) {
                 return false;
             }
             palosYaVistos.add(actual.getPalo());
 
-            // 2. vr que todas tienen = numero
+            // vr que todas tienen = numero
             if (actual.getSimbolo().getValorNumerico() != numeroReferencia) {
                 return false;
             }
