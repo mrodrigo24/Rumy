@@ -47,13 +47,13 @@ public class Juego implements Serializable {
                 JugadorIA bot = (JugadorIA) jugadorActual;
                 System.out.println("\n--- TURNO AUTOMÁTICO DE " + bot + " ---");
 
-                // Fase de Robo Automática
+                // Fase de Robo auto
                 bot.decidirRoboAutomatico(this.maz, this.mesa.getMazoDescarte());
                 registrarAccion(bot + " ha realizado su fase de robo.");
                 // Fase de Jugadas Automática
                 bot.decidirJugadasAutomaticas(this.valRumy, this.mesa, reglas);
 
-                // Fase de Descarte Automática
+                // Fase de Descarte auto
                 Carta cartaTirada = bot.decidirDescarteAutomatico();
                 if (cartaTirada != null) {
                     mesa.tirarAlDescarte(cartaTirada);
@@ -163,12 +163,12 @@ public class Juego implements Serializable {
                 turno = (turno + 1) % 4;
                 System.out.println("\n--- CAMBIO DE TURNO ---");
             }
-        } // Llave 1: Cierra el bloque ELSE (Humano) que te faltaba por cerrar antes del while
-    } // Llave 2: Cierra el bucle WHILE principal
-} // Llave 3: Cierra el método jugar()
+        } // Cierra el bloque ELSE (Humano) que te faltaba por cerrar antes del while
+    } // Cierra el bucle WHILE principal
+} //  Cierra el método jugar()
 
 public void registrarAccion(String accion) {
     this.historialMovimientos.add(accion);
     GestorFicheros.guardarLog(this.historialMovimientos, "log_partida.txt");
 }
-} // Llave 4: Cierra la clase Juego por completo
+} // Cierra la clase Juego por completo

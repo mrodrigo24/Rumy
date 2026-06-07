@@ -5,7 +5,7 @@ import java.util.List;
 public class JugadasEnMesa implements Serializable {
     private List<Jugada> listaJugadas;
 
-    // Constructor que tú creaste
+    // Constructor que  creaste
     public JugadasEnMesa() {
         this.listaJugadas = new ArrayList<>();
     }

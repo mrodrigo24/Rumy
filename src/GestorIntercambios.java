@@ -18,7 +18,7 @@ public class GestorIntercambios implements Serializable {
         System.out.println("¿Numero carta de tu mano quieres ofrecer para el intercambio?");
         int numeroMano = LectorTeclado.leerEnteroEnRango(1, jugador.getCartasPorJugador().size());
 
-        // Extraemos temporalmente la carta de su mano (pone un null en su lugar)
+        // Extraemos temporalmente la carta de su mano
         Carta cartaOfrecida = jugador.elegirCarta(numeroMano);
         if (cartaOfrecida == null) {
             System.out.println("Esa carta ya no está disponible.");
@@ -46,7 +46,7 @@ public class GestorIntercambios implements Serializable {
         Carta cartaRescatada = jugadas.intercambiarCarta(indiceJugada, cartaOfrecida, indiceCartaMesa);
 
         if (cartaRescatada != null) {
-            //  El intercambio fue legal. Carta a Mano
+            //  El intercambio fue legal Carta a Mano
             jugador.volverLaCartaAlMazodeJugador(cartaRescatada);
             System.out.println("¡Perfecto! Has recibido " + cartaRescatada + " en tu mano.");
         } else {

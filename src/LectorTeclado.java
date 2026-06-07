@@ -4,7 +4,7 @@ public class LectorTeclado {
         Scanner scan = new Scanner(System.in);
         while (!scan.hasNextInt()) {
             System.out.println("¡Error! Introduce posición de la carta.");
-            scan.next(); // Limpiamos la letra
+            scan.next();
         }
         return scan.nextInt();
     }

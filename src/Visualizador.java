@@ -23,7 +23,7 @@ public class Visualizador implements Serializable {
     }
 
     public void mostarNumeroDescarte(Jugador jugador){
-        // 1. Creamos la copia limpia y la ordenamos
+        //Creamos la copia limpia y la ordenamos
         List<Carta> copiaOrdenada = new ArrayList<>(jugador.getCartasPorJugador());
         Collections.sort(copiaOrdenada);
 
@@ -31,7 +31,7 @@ public class Visualizador implements Serializable {
         opciones.clear();
         System.out.println("\n=== TU MANO (ORDENADA) ===");
 
-        // 2. Usamos un bucle clasico con indice para que los números vayan seguidos: 1, 2, 3...
+        // Usamos un bucle clasico con indice para que los números vayan seguidos: 1, 2, 3...
         for (int i = 0; i < copiaOrdenada.size(); i++) {
             Carta c = copiaOrdenada.get(i);
 
